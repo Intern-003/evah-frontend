@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@keyframes slideOffers {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  10% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  30% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  40% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* IMPORTANT FIX */
+.animate-slideOffers {
+  animation: slideOffers 9s infinite ease-in-out;
+  opacity: 0;                 /* 👈 default hidden */
+  transform: translateX(100%);/* 👈 start off-screen */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
