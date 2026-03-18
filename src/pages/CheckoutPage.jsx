@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGet } from "../hooks/useGet";
+import { usePost } from "../hooks/usePost";
 import CheckoutSkeleton from "../components/CheckoutSkeleton";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { data, loading, error } = useGet("cart");
+  const { execute: createOrder, loading: orderLoading } = usePost("orders");
 
   const [form, setForm] = useState({
     email: "",
-    firstName: "",
+    name: "",
     lastName: "",
     address: "",
     city: "",
@@ -33,11 +35,6 @@ export default function CheckoutPage() {
   const subtotal = cart.reduce((t, i) => t + i.price * i.qty, 0);
 
   if (loading) {
-    // return (
-    //   <div className="text-center mt-40 text-[#6d4b53]">
-    //     Loading checkout...
-    //   </div>
-    // );
     return <CheckoutSkeleton />;
   }
 
@@ -47,6 +44,28 @@ export default function CheckoutPage() {
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  async function handlePay() {
+    try {
+      const fullAddress = `${form.address}, ${form.city}, ${form.state} - ${form.zip}`;
+
+      const res = await createOrder({
+        email: form.email,
+        name: form.name,
+        phone: form.phone,
+        address: fullAddress,
+      });
+
+      navigate("/payment", {
+        state: {
+          order: res.order,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      alert("Order failed");
+    }
   }
 
   const inputStyle = `
@@ -106,7 +125,7 @@ export default function CheckoutPage() {
 
               <div className="bg-white border border-[#f2c9d8] rounded-xl p-3 shadow-sm">
                 <div className="grid grid-cols-3 gap-3">
-                  {/* SHOP PAY */}
+                  {/* gpay PAY */}
 
                   <button
                     className="
@@ -185,39 +204,23 @@ export default function CheckoutPage() {
               <h2 className="text-[18px] font-medium">Delivery</h2>
 
               <select className="w-full border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9]">
-                <option>Maharashtra</option>
-                <option>Madhya Pradesh</option>
+                <option>India</option>
               </select>
 
-              <div className="grid grid-cols-2 gap-4">
-                <input
-                  name="firstName"
-                  value={form.firstName}
-                  onChange={handleChange}
-                  placeholder="First name"
-                  className="border border-gray-300 rounded-md px-3 py-3 focus:border-[#FF76B9]"
-                />
-
-                <input
-                  name="lastName"
-                  value={form.lastName}
-                  onChange={handleChange}
-                  placeholder="Last name"
-                  className="border border-gray-300 rounded-md px-3 py-3 focus:border-[#FF76B9]"
-                />
-              </div>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Enter full name"
+                className="w-full border border-gray-300 rounded-md px-3 py-3 focus:border-[#FF76B9] outline-none transition"
+              />
 
               <input
                 name="address"
                 value={form.address}
                 onChange={handleChange}
-                placeholder="Address"
-                className="border border-gray-300 rounded-md px-4 py-3 pr-55 focus:border-[#FF76B9]"
-              />
-
-              <input
-                placeholder="Apartment, suite, etc. (optional)"
-                className="border border-gray-300 rounded-md px-4 py-3 pr-55 focus:border-[#FF76B9]"
+                placeholder="Address ( Apartment, suite, etc. )"
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9] outline-none transition"
               />
 
               <div className="grid grid-cols-3 gap-4">
@@ -226,18 +229,18 @@ export default function CheckoutPage() {
                   value={form.city}
                   onChange={handleChange}
                   placeholder="City"
-                  className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9]"
+                  className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9] outline-none transition"
                 />
 
                 <select
                   name="state"
                   value={form.state}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9]"
+                  className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9] outline-none transition"
                 >
                   <option>State</option>
-                  <option>California</option>
-                  <option>Texas</option>
+                  <option>Maharashtra</option>
+                  <option>Madhya pradesh</option>
                 </select>
 
                 <input
@@ -245,7 +248,7 @@ export default function CheckoutPage() {
                   value={form.zip}
                   onChange={handleChange}
                   placeholder="ZIP code"
-                  className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9]"
+                  className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9] outline-none transition"
                 />
               </div>
 
@@ -254,7 +257,7 @@ export default function CheckoutPage() {
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="Phone"
-                className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9]"
+                className="border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9] outline-none transition"
               />
 
               <label className="flex items-center gap-2 text-sm">
@@ -340,14 +343,14 @@ export default function CheckoutPage() {
                 <label
                   className={`
                 flex items-center justify-between p-4 cursor-pointer border-t transition
-                ₹{paymentMethod === "shop" ? "bg-[#FFF3F8]" : "hover:bg-[#FFF8FB]"}
+                ₹{paymentMethod === "gpay" ? "bg-[#FFF3F8]" : "hover:bg-[#FFF8FB]"}
                 `}
                 >
                   <div className="flex items-center gap-3">
                     <input
                       type="radio"
-                      checked={paymentMethod === "shop"}
-                      onChange={() => setPaymentMethod("shop")}
+                      checked={paymentMethod === "gpay"}
+                      onChange={() => setPaymentMethod("gpay")}
                       className="accent-[#FF76B9]"
                     />
 
@@ -357,7 +360,7 @@ export default function CheckoutPage() {
                   <span className="text-purple-600 font-semibold">G Pay</span>
                 </label>
 
-                {paymentMethod === "shop" && (
+                {paymentMethod === "gpay" && (
                   <div className="p-5 text-sm text-gray-500 border-t bg-[#FFF9FB]">
                     Pay in full or in installments using G Pay.
                   </div>
@@ -395,6 +398,8 @@ export default function CheckoutPage() {
               {/* PAY BUTTON */}
 
               <button
+                // onClick={() => navigate("/payment")}
+                onClick={handlePay}
                 className="
                 w-full
                 py-4
@@ -414,7 +419,7 @@ export default function CheckoutPage() {
               >
                 {paymentMethod === "paypal"
                   ? "Pay with PayPal"
-                  : paymentMethod === "shop"
+                  : paymentMethod === "gpay"
                     ? "Continue with G Pay"
                     : "Pay now"}
               </button>
@@ -470,7 +475,7 @@ export default function CheckoutPage() {
                     {item.name}
                   </p>
 
-                  <p className="text-xs text-gray-500">1.7 Fl Oz / 50 ML</p>
+                  {/* <p className="text-xs text-gray-500">1.7 Fl Oz / 50 ML</p> */}
                 </div>
 
                 <p className="text-sm font-semibold text-[#2b1b1f]">
@@ -506,7 +511,7 @@ export default function CheckoutPage() {
 
           <div className="space-y-3 text-sm">
             <div className="flex justify-between text-gray-600">
-              <span>Subtotal · 11 items</span>
+              <span>total amount · </span>
               <span>₹{subtotal}</span>
             </div>
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import FiltersSidebar from "../components/FiltersSidebar";
 import { useGet } from "../hooks/useGet";
@@ -15,6 +15,13 @@ export default function NewArrivals() {
   // { success: true, products: [...] }
   const products = data?.products || [];
 
+  const itemsPerPage = 9;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, filters]);
+
   const filteredProducts = products.filter((product) => {
     // CATEGORY
     if (
@@ -24,48 +31,44 @@ export default function NewArrivals() {
       return false;
     }
 
-    // PRICE FILTER
+    // PRICE
     if (filters.maxPrice && product.price > filters.maxPrice) {
       return false;
     }
 
-    // FRAGRANCE TYPE
+    // TYPE
     if (filters.type?.length) {
-      if (!filters.type.includes(product.type)) {
-        return false;
-      }
-    }
-
-    // SCENT FAMILY
-    if (filters.family?.length) {
-      if (!filters.family.includes(product.family)) {
-        return false;
-      }
-    }
-
-    // NOTES
-    if (filters.notes?.length) {
-      if (!filters.notes.includes(product.notes)) {
-        return false;
-      }
-    }
-
-    // OCCASION
-    if (filters.occasion?.length) {
-      if (!filters.occasion.includes(product.occasion)) {
+      if (
+        !filters.type.some(
+          (t) => t.toLowerCase() === product.type?.toLowerCase(),
+        )
+      ) {
         return false;
       }
     }
 
     // LONGEVITY
     if (filters.longevity?.length) {
-      if (!filters.longevity.includes(product.longevity)) {
+      if (
+        !filters.longevity.some(
+          (l) => l.toLowerCase() === product.longevity?.toLowerCase(),
+        )
+      ) {
         return false;
       }
     }
 
     return true;
   });
+
+  /* ================= PAGINATION ================= */
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   return (
     <>
@@ -154,7 +157,7 @@ export default function NewArrivals() {
               </div>
             ) : (
               <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-15">
-                {filteredProducts.map((product) => (
+                {paginatedProducts.map((product) => (
                   <ProductCard
                     key={product.id}
                     product={{
@@ -174,6 +177,25 @@ export default function NewArrivals() {
                     }}
                   />
                 ))}
+              </div>
+            )}
+            {totalPages > 1 && (
+              <div className="flex justify-center gap-3 mt-12">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-9 h-9 rounded-md text-sm transition ${
+                        currentPage === page
+                          ? "bg-[#c48b5a] text-white"
+                          : "border border-[#e4a3b1] text-[#2b1b1f] hover:bg-[#fbe3e8] cursor-pointer"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
               </div>
             )}
           </div>

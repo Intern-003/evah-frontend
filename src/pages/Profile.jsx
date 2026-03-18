@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 export default function Account() {
   const navigate = useNavigate();
 
-  const [tab, setTab] = useState("orders");
+  const [tab, setTab] = useState("profile");
 
   const { execute: logoutUser, loading } = usePost("logout");
 
@@ -46,6 +46,10 @@ export default function Account() {
   const handleLogout = async () => {
     await logoutUser();
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+
+    // localStorage.removeItem("role");
+
     navigate("/login");
   };
 
@@ -107,20 +111,6 @@ export default function Account() {
 
             <div className="flex gap-2 bg-[#FFF5F8] p-1 rounded-full">
               <button
-                onClick={() => setTab("orders")}
-                className={`
-                px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                ${
-                  tab === "orders"
-                    ? "bg-gradient-to-r from-[#FF76B9] to-[#ffa3cf] text-white shadow-md"
-                    : "text-[#6d4b53] hover:text-[#FF76B9] cursor-pointer"
-                }
-                `}
-              >
-                Orders
-              </button>
-
-              <button
                 onClick={() => setTab("profile")}
                 className={`
                 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
@@ -132,6 +122,20 @@ export default function Account() {
                 `}
               >
                 Profile
+              </button>
+
+              <button
+                onClick={() => setTab("orders")}
+                className={`
+                px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                ${
+                  tab === "orders"
+                    ? "bg-gradient-to-r from-[#FF76B9] to-[#ffa3cf] text-white shadow-md"
+                    : "text-[#6d4b53] hover:text-[#FF76B9] cursor-pointer"
+                }
+                `}
+              >
+                Orders
               </button>
             </div>
           </div>

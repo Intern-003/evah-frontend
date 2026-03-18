@@ -30,6 +30,8 @@ export function usePost(endpoint) {
       setData(response.data);
       return response.data;
     } catch (err) {
+      console.log("API ERROR:", err.response?.data); // 👈 add this
+
       const errData = err.response?.data || "Something went wrong";
       setError(errData);
       throw errData;

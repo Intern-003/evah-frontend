@@ -120,7 +120,7 @@ function ReviewCard({ review }) {
 
           <div>
             <p className="text-sm font-medium text-[#2b1b1f]">
-              {review.user?.name}
+              {review.user?.name || "Guest"}
             </p>
 
             {review.verified && (

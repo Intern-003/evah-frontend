@@ -2,195 +2,163 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-[#f1d6dd] pt-20 pb-10">
-      <div className="max-w-[1440px] mx-auto px-10 xl:px-16">
-        <div className="grid md:grid-cols-4 gap-14">
-          {/* LOGO + BRAND */}
+    <footer className="relative bg-[#fff7fa] border-t border-[#f3d2d9] pt-18 pb-10 overflow-hidden">
+      {/* SOFT GLOW */}
+      <div className="absolute -top-32 -right-32 w-80 h-80 bg-[#FF76B9]/10 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-[#FF76B9]/10 rounded-full blur-3xl"></div>
+
+      <div className="relative max-w-[1440px] mx-auto px-6 xl:px-16">
+        <div className="grid md:grid-cols-4 gap-16">
+          {/* BRAND */}
           <div>
-            <h3 className="text-[26px] font-serif tracking-[0.3em] text-[#2b1b1f] mb-4">
+            <h3 className="text-[28px] font-serif tracking-[0.35em] text-[#2b1b1f] mb-5">
               EVAH
             </h3>
-            <p className="text-[#6d4b53] text-sm leading-relaxed">
-              Luxury fragrances crafted with passion. Timeless elegance in every
-              bottle.
+
+            <p className="text-[#6d4b53] text-sm leading-relaxed max-w-[260px]">
+              Crafted luxury fragrances that define timeless elegance and
+              elevate your everyday presence.
             </p>
+
+            {/* MINI SOCIAL */}
+            <div className="flex gap-3 mt-6">
+              {["facebook", "instagram", "x"].map((s, i) => (
+                <div
+                  key={i}
+                  className="w-9 h-9 rounded-full border border-[#f3d2d9] flex items-center justify-center text-[#8b6a72] hover:bg-[#FF76B9] hover:text-white transition cursor-pointer"
+                >
+                  <i className={`fa-brands fa-${s}`}></i>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* WRITE TO US */}
+          {/* CONTACT */}
           <div>
             <h4 className="text-sm font-semibold tracking-wide mb-6 text-[#2b1b1f]">
-              WRITE TO US
+              CONTACT
             </h4>
 
-            <ul className="space-y-4 text-sm text-[#6d4b53]">
-              <li>
-                Address: 1237 E Warner Avenue,
-                <br />
-                Santa Ana CA 92705
+            <ul className="space-y-4 text-sm text-[#6d4b53] leading-relaxed">
+              {/* ADDRESS */}
+              <li className="flex gap-3">
+                <span className="text-[#FF76B9] mt-[2px]">
+                  <i className="fa-solid fa-location-dot"></i>
+                </span>
+                <span>
+                  1237 E Warner Avenue, <br />
+                  Santa Ana, CA 92705
+                </span>
               </li>
-              <li>hello@evahperfume.com</li>
+
+              {/* EMAIL */}
+              <li className="flex gap-3 items-center hover:text-[#FF76B9] transition cursor-pointer">
+                <span className="text-[#FF76B9]">
+                  <i className="fa-solid fa-envelope"></i>
+                </span>
+                <span>hello@evahperfume.com</span>
+              </li>
+
+              {/* PHONE */}
+              <li className="flex gap-3 items-center hover:text-[#FF76B9] transition cursor-pointer">
+                <span className="text-[#FF76B9]">
+                  <i className="fa-solid fa-phone"></i>
+                </span>
+                <span>+91 98765 43210</span>
+              </li>
             </ul>
           </div>
 
-          {/* USEFUL LINKS */}
+          {/* LINKS */}
           <div>
             <h4 className="text-sm font-semibold tracking-wide mb-6 text-[#2b1b1f]">
-              USEFUL LINKS
+              QUICK LINKS
             </h4>
 
-            {/* <ul className="space-y-3 text-sm text-[#6d4b53]">
-              <li className="hover:text-[#FF76B9] cursor-pointer transition">
-                Blogs
-              </li>
-              <li className="hover:text-[#FF76B9] cursor-pointer transition">
-                Privacy Policy
-              </li>
-              <li className="hover:text-[#FF76B9] cursor-pointer transition">
-                Refund & Returns
-              </li>
-              <li className="hover:text-[#FF76B9] cursor-pointer transition">
-                Terms & Conditions
-              </li>
-            </ul> */}
             <ul className="space-y-3 text-sm text-[#6d4b53]">
-              <li>
-                <Link to="/blogs" className="hover:text-[#FF76B9] transition">
-                  Blogs
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/privacy-policy"
-                  className="hover:text-[#FF76B9] transition"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/refund-policy"
-                  className="hover:text-[#FF76B9] transition"
-                >
-                  Refund & Returns
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/terms-conditions"
-                  className="hover:text-[#FF76B9] transition"
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
+              {[
+                { name: "About Us", path: "/about-us" },
+                { name: "Privacy Policy", path: "/privacy-policy" },
+                { name: "Refund Policy", path: "/refund-policy" },
+                { name: "Terms & Conditions", path: "/terms-conditions" },
+              ].map((link, i) => (
+                <li key={i}>
+                  <Link
+                    to={link.path}
+                    className="relative hover:text-[#FF76B9] transition"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* NEWSLETTER */}
           <div>
             <h4 className="text-sm font-semibold tracking-wide mb-6 text-[#2b1b1f]">
-              NEWSLETTER SIGNUP
+              STAY UPDATED
             </h4>
 
             <p className="text-sm text-[#6d4b53] mb-6">
-              Subscribe to our newsletter for new drops and exclusive deals.
+              Get exclusive drops, offers & early access.
             </p>
 
-            <div
-              className="
-                    flex items-center
-                    border border-[#FF76B9]
-                    rounded-full
-                    overflow-hidden
-                    bg-white
-                    focus-within:ring-1
-                    focus-within:ring-[#FF76B9]/40
-                    transition
-                "
-            >
+            {/* INPUT */}
+            <div className="relative">
               <input
                 type="email"
-                placeholder="Your email address"
+                placeholder="Enter your email"
                 className="
-                    flex-1
-                    px-6 py-3.5
-                    text-sm
-                    text-[#2b1b1f]
-                    placeholder-[#6d4b53]
-                    outline-none
-                    bg-transparent
-                    "
+                  w-full
+                  px-5 py-3
+                  rounded-full
+                  border border-[#f3d2d9]
+                  bg-white
+                  text-sm
+                  outline-none
+                  focus:ring-1
+                  focus:ring-[#FF76B9]/40
+                "
               />
 
               <button
                 className="
-                    px-7 py-3.5
-                    bg-[#FF76B9]
-                    text-white
-                    text-sm
-                    font-medium
-                    tracking-wide
-                    transition-all duration-300
-                    hover:bg-[#ff5fa2]
-                    "
-              >
-                Subscribe
-              </button>
-            </div>
-            {/* SOCIAL ICONS */}
-            <div className="flex items-center gap-4 mt-6">
-              {[
-                {
-                  label: "Facebook",
-                  icon: "M9 8h2V6c0-1.1.9-2 2-2h2v3h-2v1h2v3h-2v8h-3V11H9V8z",
-                },
-                {
-                  label: "LinkedIn",
-                  icon: "M4 3a2 2 0 110 4 2 2 0 010-4zm0 6h4v12H4V9zm6 0h4v2h.1c.6-1.1 2-2.1 4.1-2.1 4.4 0 5.2 2.9 5.2 6.6V21h-4v-5.4c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21h-4V9z",
-                },
-                {
-                  label: "Instagram",
-                  icon: "M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5a4 4 0 100 8 4 4 0 000-8zm6.5-.5a1 1 0 11-2 0 1 1 0 012 0z",
-                },
-                {
-                  label: "X",
-                  icon: "M18 3l-5.5 6.5L18 21h-4.5l-3.5-4.5L6 21H3l6-7L3 3h4.5l3 4L13.5 3H18z",
-                },
-              ].map((item, i) => (
-                <button
-                  key={i}
-                  aria-label={item.label}
-                  className="
-                    w-8 h-8
-                    rounded-full
-                    bg-[#FFB3C6]
-                    flex items-center justify-center
-                    text-[#2b1b1f]
-                    transition-all duration-300
-                    hover:bg-[#FF76B9]
-                    hover:text-white
-                    hover:-translate-y-[2px]
+                  absolute
+                  right-1
+                  top-1
+                  bottom-1
+                  px-5
+                  rounded-full
+                  bg-gradient-to-r
+                  from-[#FF76B9]
+                  to-[#ffa3cf]
+                  text-white
+                  text-sm
+                  font-medium
+                  hover:opacity-90
+                  transition
+                  cursor-pointer
                 "
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d={item.icon} />
-                  </svg>
-                </button>
-              ))}
+              >
+                Join
+              </button>
             </div>
           </div>
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="mt-16 pt-6 border-t border-[#f1d6dd] flex flex-col md:flex-row items-center justify-between text-sm text-[#6d4b53]">
+        <div className="mt-16 pt-6 border-t border-[#f3d2d9] flex flex-col md:flex-row justify-between items-center text-sm text-[#8b6a72]">
           <p>© {new Date().getFullYear()} EVAH. All rights reserved.</p>
+
+          <div className="flex gap-6 mt-3 md:mt-0">
+            <span className="hover:text-[#FF76B9] cursor-pointer transition">
+              Terms
+            </span>
+            <span className="hover:text-[#FF76B9] cursor-pointer transition">
+              Privacy
+            </span>
+          </div>
         </div>
       </div>
     </footer>

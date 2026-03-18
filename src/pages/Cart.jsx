@@ -58,7 +58,7 @@ export default function Cart() {
 
   const subtotal = cart.reduce((t, i) => t + i.price * i.qty, 0);
 
-  const shipping = subtotal > 15000 ? 0 : 499;
+  const shipping = subtotal > 15000 ? 0 : 0;
 
   const total = subtotal + shipping;
 
@@ -233,7 +233,7 @@ export default function Cart() {
 
             {/* CHECKOUT */}
             <button
-              onClick={() => navigate("/Checkout")}
+              onClick={() => navigate("/checkout")}
               className="
               mt-8 w-full py-4
               rounded-full

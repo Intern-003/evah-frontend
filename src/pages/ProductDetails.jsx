@@ -8,44 +8,6 @@ import { useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import ProductDetailSkeleton from "../components/ProductDetailSkeleton";
 
-const demoReviews = [
-  {
-    id: 1,
-    user_name: "Arsalan K.",
-    rating: 5,
-    comment: "Beautiful fragrance. Long lasting and elegant.",
-    date: "27 Feb 2026",
-  },
-  {
-    id: 2,
-    user_name: "Zoya M.",
-    rating: 4,
-    comment: "Very smooth scent. Perfect for evening wear.",
-    date: "25 Feb 2026",
-  },
-  {
-    id: 3,
-    user_name: "Rahul S.",
-    rating: 5,
-    comment: "Projection is amazing. Highly recommended.",
-    date: "20 Feb 2026",
-  },
-  {
-    id: 4,
-    user_name: "Fatima A.",
-    rating: 4,
-    comment: "Warm and spicy. Love the dry down.",
-    date: "18 Feb 2026",
-  },
-  {
-    id: 5,
-    user_name: "Imran T.",
-    rating: 2,
-    comment: "Definitely buying again.",
-    date: "15 Feb 2026",
-  },
-];
-
 export default function ProductDetails() {
   const navigate = useNavigate();
 
@@ -157,14 +119,14 @@ export default function ProductDetails() {
     try {
       const res = await createReview({
         product_id: product.id,
-        rating: newReview.rating,
+        rating: Number(newReview.rating),
         comment: newReview.comment,
       });
 
       if (res?.success) {
         toast.success("Review added");
 
-        setReviews([res.review, ...reviews]);
+        setReviews((prev) => [res.review, ...prev]);
         setNewReview({ rating: 5, comment: "" });
         setShowForm(false);
       }
@@ -609,7 +571,7 @@ export default function ProductDetails() {
                     {/* Name + Verified */}
                     <div className="flex items-center gap-3">
                       <p className="font-semibold text-[#2b1b1f]">
-                        {review.user.name}
+                        {review.user?.name || "Anonymous"}
                       </p>
 
                       <span className="text-[10px] tracking-wider uppercase bg-[#e7ffe7] text-green-600 px-2 py-1 rounded-full">
@@ -617,7 +579,9 @@ export default function ProductDetails() {
                       </span>
                     </div>
 
-                    <p className="text-xs text-[#6d4b53] mt-1">{review.date}</p>
+                    <p className="text-xs text-[#6d4b53] mt-1">
+                      {new Date(review.created_at).toLocaleDateString()}
+                    </p>
                   </div>
 
                   {/* Helpful */}
