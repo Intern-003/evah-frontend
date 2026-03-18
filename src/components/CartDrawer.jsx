@@ -149,15 +149,90 @@ export default function CartDrawer({ open, onClose }) {
             space-y-10
             "
         >
-          {cart.map((item) => (
-            <CartItem
-              key={item.id}
-              item={item}
-              updateQty={updateQty}
-              removeItem={removeItem}
-              loading={loadingId === item.id}
-            />
-          ))}
+          {/* LOADING SKELETON */}
+
+          {loading &&
+            Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex gap-5 pb-8 border-b border-[#f1d4dc] animate-pulse"
+              >
+                {/* IMAGE */}
+                <div className="w-[80px] h-[100px] bg-[#f5e5ea] rounded-xl"></div>
+
+                {/* CONTENT */}
+                <div className="flex-1 space-y-3">
+                  <div className="h-4 w-[70%] bg-[#f5e5ea] rounded"></div>
+
+                  <div className="h-3 w-[40%] bg-[#f5e5ea] rounded"></div>
+
+                  <div className="h-8 w-[90px] bg-[#f5e5ea] rounded-full"></div>
+
+                  <div className="h-3 w-[50px] bg-[#f5e5ea] rounded"></div>
+                </div>
+              </div>
+            ))}
+
+          {/* EMPTY CART */}
+
+          {!loading && cart.length === 0 && (
+            <div className="flex flex-col items-center justify-center text-center py-20">
+              <svg
+                width="60"
+                height="60"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#FF76B9"
+                strokeWidth="1.5"
+              >
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="18" cy="21" r="1" />
+                <path d="M6 6h15l-1.5 9h-13z" />
+              </svg>
+
+              <h3 className="mt-6 text-[16px] font-medium text-[#2b1b1f]">
+                Your cart is empty
+              </h3>
+
+              <p className="text-sm text-[#8b6a72] mt-2 max-w-[220px]">
+                Looks like you haven't added anything yet.
+              </p>
+
+              <button
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => navigate("/shop-all"), 350);
+                }}
+                className="
+                  mt-6
+                  px-6
+                  py-3
+                  rounded-full
+                  bg-[#FF76B9]
+                  text-white
+                  text-sm
+                  hover:scale-105
+                  transition
+                "
+              >
+                Start Shopping
+              </button>
+            </div>
+          )}
+
+          {/* CART ITEMS */}
+
+          {!loading &&
+            cart.length > 0 &&
+            cart.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                updateQty={updateQty}
+                removeItem={removeItem}
+                loading={loadingId === item.id}
+              />
+            ))}
 
           {/* OFFER TIMER */}
 
@@ -191,7 +266,7 @@ export default function CartDrawer({ open, onClose }) {
             onClick={() => {
               onClose();
               setTimeout(() => {
-                navigate("/Checkout");
+                navigate("/checkout");
               }, 350); // drawer animation time
             }}
             className="

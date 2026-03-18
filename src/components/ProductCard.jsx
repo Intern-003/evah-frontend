@@ -189,10 +189,10 @@ export default function ProductCard({ product }) {
         {/* PRICE */}
         <div className="flex items-center gap-2 mt-4 mb-4">
           <span className="text-sm text-[#6d4b53] line-through">
-            ₹{product.actualPrice}
+            ₹{product.salePrice}
           </span>
           <span className="text-[18px] font-semibold text-[#FF76B9]">
-            ₹{product.salePrice}
+            ₹{product.actualPrice}
           </span>
         </div>
 

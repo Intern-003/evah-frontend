@@ -1,4 +1,4 @@
-import Header from "../components/header";
+import Header from "../components/Header";
 import Hero from "../components/Home/Hero";
 import MarqueeBar from "../components/Home/MarqueeBar";
 import FeaturedSection from "../components/Home/FeaturedSection";

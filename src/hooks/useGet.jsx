@@ -9,27 +9,35 @@ export function useGet(endpoint) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const fetchData = useCallback(
+    async (customEndpoint) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await axios.get(`${BASE_URL}${endpoint}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      //  console.log("fetch succeeded → setting data");
-      setData(response.data);
-    } catch (err) {
-      setError(
-        err?.response?.data?.message || err?.message || "Something went wrong",
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [endpoint]); // ✅ stable unless endpoint changes
+      try {
+        const finalEndpoint = customEndpoint || endpoint;
+
+        const response = await axios.get(`${BASE_URL}${finalEndpoint}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        setData(response.data);
+        return response.data; // 🔥 important
+      } catch (err) {
+        setError(
+          err?.response?.data?.message ||
+            err?.message ||
+            "Something went wrong",
+        );
+      } finally {
+        setLoading(false);
+      }
+    },
+    [endpoint],
+  );
 
   useEffect(() => {
     // console.log("useEffect triggered → calling fetchData");

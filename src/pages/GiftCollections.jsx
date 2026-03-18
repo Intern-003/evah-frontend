@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useGet } from "../hooks/useGet";
+import { usePost } from "../hooks/usePost";
+import toast from "react-hot-toast";
 import ProductCard from "../components/ProductCard";
 
 const categories = ["Perfumes Gifts?", "Sets & collections?"];
@@ -12,6 +14,25 @@ export default function GiftCollections() {
   const { data, loading, error } = useGet("products");
 
   const allProducts = data?.products || [];
+
+  const { execute } = usePost("cart/add");
+
+  const addSetToCart = async (products) => {
+    try {
+      for (const product of products) {
+        await execute({
+          product_id: product.id,
+          quantity: 1,
+        });
+      }
+
+      toast.success("Collection added to cart");
+
+      window.dispatchEvent(new Event("cartUpdated"));
+    } catch (error) {
+      toast.error("Failed to add set");
+    }
+  };
 
   /* Filter only gifts category */
   const products = allProducts.filter(
@@ -48,6 +69,14 @@ export default function GiftCollections() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+  const gentlemanCollection = allProducts
+    .filter((p) => p.category?.slug === "gentleman-set")
+    .slice(0, 2);
+
+  const womenCollection = allProducts
+    .filter((p) => p.category?.slug === "women-set")
+    .slice(0, 2);
 
   return (
     <>
@@ -223,36 +252,97 @@ export default function GiftCollections() {
                   The Gentleman&apos;s Collection
                 </h2>
 
-                <div className="border-y border-[#f1cfd6] divide-y divide-[#f1cfd6]">
-                  {["VEYRON", "REGENT", "KNIGHT", "AZURA"].map((item) => (
-                    <div
-                      key={item}
-                      className="flex justify-between items-center py-5 text-sm"
-                    >
-                      <span className="tracking-wide text-[#2b1b1f]">
-                        {item}
-                      </span>
-                      <span className="text-[#6d4b53] font-medium">
-                        Rs. 2,000.00
-                      </span>
-                    </div>
-                  ))}
+                <div className="grid grid-cols-2 gap-6">
+                  {gentlemanCollection.map((product) => {
+                    const discount =
+                      product.sale_price &&
+                      Math.round(
+                        ((product.price - product.sale_price) / product.price) *
+                          100,
+                      );
+
+                    return (
+                      <div
+                        key={product.id}
+                        className="
+                        group
+                        bg-white
+                        border border-[#f3d2d9]
+                        rounded-2xl
+                        p-4
+                        hover:shadow-xl
+                        transition
+                        "
+                      >
+                        {/* IMAGE */}
+
+                        <div className="relative h-[140px] flex items-center justify-center mb-4">
+                          {discount && (
+                            <span
+                              className="
+                              absolute top-0 left-0
+                              bg-[#FF76B9]
+                              text-white
+                              text-[10px]
+                              px-2 py-1
+                              rounded-full
+                              "
+                            >
+                              {discount}% OFF
+                            </span>
+                          )}
+
+                          <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="
+                            max-h-[120px]
+                            object-contain
+                            group-hover:scale-105
+                            transition
+                            "
+                          />
+                        </div>
+
+                        {/* NAME */}
+
+                        <h3 className="text-sm font-medium text-[#2b1b1f]">
+                          {product.name}
+                        </h3>
+
+                        {/* PRICE */}
+
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[#FF76B9] font-semibold text-sm">
+                            ₹{product.sale_price ?? product.price}
+                          </span>
+
+                          {product.sale_price && (
+                            <span className="text-xs line-through text-gray-400">
+                              ₹{product.price}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <button
+                  onClick={() => addSetToCart(gentlemanCollection)}
                   className="
-                mt-12 w-full
-                bg-gradient-to-r from-[#f7c6d0] via-[#f3a8b8] to-[#e48fa3]
-                hover:from-[#e48fa3] hover:via-[#f3a8b8] hover:to-[#f7c6d0]
-                text-white
-                text-[12px] tracking-[0.25em]
-                py-4 rounded-full
-                transition-all duration-300
-                shadow-[0_12px_35px_rgba(228,143,163,0.45)]
-                hover:shadow-[0_18px_45px_rgba(228,143,163,0.6)]
-                active:scale-[0.98]
-                cursor-pointer
-            "
+                    mt-12 w-full
+                    bg-gradient-to-r from-[#f7c6d0] via-[#f3a8b8] to-[#e48fa3]
+                    hover:from-[#e48fa3] hover:via-[#f3a8b8] hover:to-[#f7c6d0]
+                    text-white
+                    text-[12px] tracking-[0.25em]
+                    py-4 rounded-full
+                    transition-all duration-300
+                    shadow-[0_12px_35px_rgba(228,143,163,0.45)]
+                    hover:shadow-[0_18px_45px_rgba(228,143,163,0.6)]
+                    active:scale-[0.98]
+                    cursor-pointer
+                  "
                 >
                   ADD SET TO CART
                 </button>
@@ -291,41 +381,97 @@ export default function GiftCollections() {
                   Confident Woman&apos;s Collection
                 </h2>
 
-                <div className="border-y border-[#f1cfd6] divide-y divide-[#f1cfd6]">
-                  {[
-                    { name: "DIVINE", price: "Rs. 4,000.00" },
-                    { name: "ASMIRA", price: "Rs. 2,500.00" },
-                    { name: "Purple Blue", price: "Rs. 2,250.00" },
-                    { name: "Twin Paradise", price: "Rs. 2,250.00" },
-                  ].map((item) => (
-                    <div
-                      key={item.name}
-                      className="flex justify-between items-center py-5 text-sm"
-                    >
-                      <span className="tracking-wide text-[#2b1b1f]">
-                        {item.name}
-                      </span>
-                      <span className="text-[#6d4b53] font-medium">
-                        {item.price}
-                      </span>
-                    </div>
-                  ))}
+                <div className="grid grid-cols-2 gap-6">
+                  {womenCollection.map((product) => {
+                    const discount =
+                      product.sale_price &&
+                      Math.round(
+                        ((product.price - product.sale_price) / product.price) *
+                          100,
+                      );
+
+                    return (
+                      <div
+                        key={product.id}
+                        className="
+                        group
+                        bg-white
+                        border border-[#f3d2d9]
+                        rounded-2xl
+                        p-4
+                        hover:shadow-xl
+                        transition
+                        "
+                      >
+                        {/* IMAGE */}
+
+                        <div className="relative h-[140px] flex items-center justify-center mb-4">
+                          {discount && (
+                            <span
+                              className="
+                              absolute top-0 left-0
+                              bg-[#FF76B9]
+                              text-white
+                              text-[10px]
+                              px-2 py-1
+                              rounded-full
+                              "
+                            >
+                              {discount}% OFF
+                            </span>
+                          )}
+
+                          <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="
+                            max-h-[120px]
+                            object-contain
+                            group-hover:scale-105
+                            transition
+                            "
+                          />
+                        </div>
+
+                        {/* NAME */}
+
+                        <h3 className="text-sm font-medium text-[#2b1b1f]">
+                          {product.name}
+                        </h3>
+
+                        {/* PRICE */}
+
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[#FF76B9] font-semibold text-sm">
+                            ₹{product.sale_price ?? product.price}
+                          </span>
+
+                          {product.sale_price && (
+                            <span className="text-xs line-through text-gray-400">
+                              ₹{product.price}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <button
+                  onClick={() => addSetToCart(womenCollection)}
                   className="
-                mt-12 w-full
-                bg-gradient-to-r from-[#f7c6d0] via-[#f3a8b8] to-[#e48fa3]
-                hover:from-[#e48fa3] hover:via-[#f3a8b8] hover:to-[#f7c6d0]
-                text-white
-                text-[12px] tracking-[0.25em]
-                py-4 rounded-full
-                transition-all duration-300
-                shadow-[0_12px_35px_rgba(228,143,163,0.45)]
-                hover:shadow-[0_18px_45px_rgba(228,143,163,0.6)]
-                active:scale-[0.98]
-                cursor-pointer
-                "
+                    mt-12 w-full
+                    bg-gradient-to-r from-[#f7c6d0] via-[#f3a8b8] to-[#e48fa3]
+                    hover:from-[#e48fa3] hover:via-[#f3a8b8] hover:to-[#f7c6d0]
+                    text-white
+                    text-[12px] tracking-[0.25em]
+                    py-4 rounded-full
+                    transition-all duration-300
+                    shadow-[0_12px_35px_rgba(228,143,163,0.45)]
+                    hover:shadow-[0_18px_45px_rgba(228,143,163,0.6)]
+                    active:scale-[0.98]
+                    cursor-pointer
+                  "
                 >
                   ADD SET TO CART
                 </button>

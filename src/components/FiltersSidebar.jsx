@@ -75,8 +75,8 @@ export default function FiltersSidebar({ filters, setFilters }) {
           <Checkbox
             key={item}
             label={item}
-            checked={filters.family?.includes(item)}
-            onChange={() => toggleCheckbox("family", item)}
+            checked={filters.type?.includes(item)}
+            onChange={() => toggleCheckbox("type", item)}
           />
         ))}
       </Section>
@@ -95,8 +95,8 @@ export default function FiltersSidebar({ filters, setFilters }) {
           <Checkbox
             key={item}
             label={item}
-            checked={filters.notes?.includes(item)}
-            onChange={() => toggleCheckbox("notes", item)}
+            checked={filters.type?.includes(item)}
+            onChange={() => toggleCheckbox("type", item)}
           />
         ))}
       </Section>
@@ -108,8 +108,8 @@ export default function FiltersSidebar({ filters, setFilters }) {
             <Checkbox
               key={item}
               label={item}
-              checked={filters.occasion?.includes(item)}
-              onChange={() => toggleCheckbox("occasion", item)}
+              checked={filters.type?.includes(item)}
+              onChange={() => toggleCheckbox("type", item)}
             />
           ),
         )}

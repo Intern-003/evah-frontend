@@ -24,12 +24,26 @@ import Reviews from "./pages/Reviews";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import TermsConditions from "./pages/TermsConditions";
-import Blogs from "./pages/Blogs";
 
 import CheckoutPage from "./pages/CheckoutPage";
+import PaymentWaiting from "./pages/PaymentWaiting";
+import OrderSuccess from "./pages/OrderSuccess";
+import TrackOrder from "./pages/TrackOrder";
 import Cart from "./pages/Cart";
 
+import AdminLayout from "./admin/layout/AdminLayout";
+
+import Dashboard from "./admin/pages/Dashboard";
+import Products from "./admin/pages/Products";
+import Orders from "./admin/pages/Orders";
+import Customers from "./admin/pages/Customers";
+import ReviewsAdmin from "./admin/pages/Reviews";
+import Coupons from "./admin/pages/Coupons";
+import Settings from "./admin/pages/Settings";
+
 import ProtectedRoute from "./components/ProtectedRoute";
+import ScrollToTopButton from "./components/ScrollToTopButton";
+import Chatbot from "./components/Chatbot";
 
 function App() {
   const location = useLocation();
@@ -42,8 +56,12 @@ function App() {
   // Hide header/footer on this pages
   const hideLayout =
     location.pathname === "/login" ||
-    location.pathname === "/Checkout" ||
-    location.pathname === "/profile";
+    location.pathname === "/checkout" ||
+    location.pathname === "/payment" ||
+    location.pathname === "/order-success" ||
+    location.pathname === "/track-order" ||
+    location.pathname === "/profile" ||
+    location.pathname.startsWith("/admin");
 
   return (
     <>
@@ -106,13 +124,37 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
-        <Route path="/blogs" element={<Blogs />} />
 
-        <Route path="/Checkout" element={<CheckoutPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/payment" element={<PaymentWaiting />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
+        <Route path="/track-order" element={<TrackOrder />} />
         <Route path="/Cart" element={<Cart />} />
+
+        {/* ADMIN PANEL */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="products" element={<Products />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="reviews" element={<ReviewsAdmin />} />
+          <Route path="coupons" element={<Coupons />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
       </Routes>
 
       {!hideLayout && <Footer />}
+
+      <ScrollToTopButton />
+
+      {!hideLayout && <Chatbot />}
     </>
   );
 }

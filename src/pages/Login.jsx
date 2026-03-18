@@ -66,6 +66,11 @@ export default function Login() {
         if (res?.token) {
           localStorage.setItem("token", res.token);
 
+          // SAVE ROLE
+          if (res?.user?.role) {
+            localStorage.setItem("role", res.user.role);
+          }
+
           toast.success("Login successful!");
 
           navigate("/");

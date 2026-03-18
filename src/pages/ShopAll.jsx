@@ -16,11 +16,18 @@ export default function ShopAll() {
 
   const [activeCategory, setActiveCategory] = useState("women");
 
+  const itemsPerPage = 9;
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     if (categoryFromURL) {
       setActiveCategory(categoryFromURL);
     }
   }, [categoryFromURL]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, filters]);
 
   // API response structure:
   // { success: true, products: [...] }
@@ -42,41 +49,37 @@ export default function ShopAll() {
 
     // FRAGRANCE TYPE
     if (filters.type?.length) {
-      if (!filters.type.includes(product.type)) {
-        return false;
-      }
-    }
-
-    // SCENT FAMILY
-    if (filters.family?.length) {
-      if (!filters.family.includes(product.family)) {
-        return false;
-      }
-    }
-
-    // NOTES
-    if (filters.notes?.length) {
-      if (!filters.notes.includes(product.notes)) {
-        return false;
-      }
-    }
-
-    // OCCASION
-    if (filters.occasion?.length) {
-      if (!filters.occasion.includes(product.occasion)) {
+      if (
+        !filters.type.some(
+          (t) => t.toLowerCase() === product.type?.toLowerCase(),
+        )
+      ) {
         return false;
       }
     }
 
     // LONGEVITY
     if (filters.longevity?.length) {
-      if (!filters.longevity.includes(product.longevity)) {
+      if (
+        !filters.longevity.some(
+          (l) => l.toLowerCase() === product.longevity?.toLowerCase(),
+        )
+      ) {
         return false;
       }
     }
 
     return true;
   });
+
+  /* ================= PAGINATION ================= */
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   return (
     <>
@@ -160,7 +163,7 @@ export default function ShopAll() {
               </div>
             ) : (
               <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-15">
-                {filteredProducts.map((product) => (
+                {paginatedProducts.map((product) => (
                   <ProductCard
                     key={product.id}
                     product={{
@@ -180,6 +183,25 @@ export default function ShopAll() {
                     }}
                   />
                 ))}
+              </div>
+            )}
+            {totalPages > 1 && (
+              <div className="flex justify-center gap-3 mt-12">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-9 h-9 rounded-md text-sm transition ${
+                        currentPage === page
+                          ? "bg-[#c48b5a] text-white"
+                          : "border border-[#e4a3b1] text-[#2b1b1f] hover:bg-[#fbe3e8] cursor-pointer"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
               </div>
             )}
           </div>
