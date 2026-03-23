@@ -189,7 +189,8 @@ export default function ProductDetails() {
 
           {/* Rating */}
           <div className="flex items-center gap-2 mb-6 text-[#FFB800] text-sm">
-            ★★★★★ <span className="text-[#6d4b53]">(128 reviews)</span>
+            ★★★★★{" "}
+            <span className="text-[#6d4b53]">({reviews.length}) reviews</span>
           </div>
 
           {/* Description */}
@@ -840,18 +841,44 @@ function ProductAccordion({ description, ingredients }) {
 
 function SocialFollow() {
   const socials = [
-    { name: "Facebook", icon: "fab fa-facebook-f" },
-    { name: "X", icon: "fab fa-x-twitter" },
-    { name: "Instagram", icon: "fab fa-instagram" },
-    { name: "Pinterest", icon: "fab fa-pinterest-p" },
-    { name: "YouTube", icon: "fab fa-youtube" },
+    {
+      name: "Facebook",
+      icon: "fab fa-facebook-f",
+      url: "https://www.facebook.com/profile.php?id=61573993740603",
+    },
+    {
+      name: "X",
+      icon: "fab fa-x-twitter",
+      url: "https://x.com/The_Evah",
+    },
+    {
+      name: "Instagram",
+      icon: "fab fa-instagram",
+      url: "https://www.instagram.com/e_vah_/",
+    },
+    {
+      name: "linkedin",
+      icon: "fab fa-linkedin",
+      url: "https://www.linkedin.com/company/evah-fragrance/",
+    },
+    {
+      name: "YouTube",
+      icon: "fab fa-youtube",
+      url: "https://www.youtube.com/@EvahEssence",
+    },
   ];
 
   return (
     <div className="mt-2 pt-2">
       <div className="flex justify-left gap-4">
         {socials.map((social) => (
-          <div key={social.name} className="relative group cursor-pointer">
+          <a
+            key={social.name}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative group cursor-pointer"
+          >
             {/* Tooltip */}
             <div
               className="
@@ -877,7 +904,7 @@ function SocialFollow() {
             >
               <i className={social.icon}></i>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>

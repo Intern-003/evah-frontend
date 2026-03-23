@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 export default function Account() {
   const navigate = useNavigate();
 
-  const [tab, setTab] = useState("profile");
+  const [tab, setTab] = useState("orders");
 
   const { execute: logoutUser, loading } = usePost("logout");
 
@@ -37,6 +37,10 @@ export default function Account() {
   const addresses = addressData?.addresses || [];
 
   const { execute: addAddress } = usePost("addresses");
+
+  const { data: ordersData, loading: ordersLoading } = useGet("orders");
+
+  const orders = ordersData?.orders || [];
 
   const { executeDelete } = useDelete();
 
@@ -111,20 +115,6 @@ export default function Account() {
 
             <div className="flex gap-2 bg-[#FFF5F8] p-1 rounded-full">
               <button
-                onClick={() => setTab("profile")}
-                className={`
-                px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                ${
-                  tab === "profile"
-                    ? "bg-gradient-to-r from-[#FF76B9] to-[#ffa3cf] text-white shadow-md"
-                    : "text-[#6d4b53] hover:text-[#FF76B9] cursor-pointer"
-                }
-                `}
-              >
-                Profile
-              </button>
-
-              <button
                 onClick={() => setTab("orders")}
                 className={`
                 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
@@ -136,6 +126,20 @@ export default function Account() {
                 `}
               >
                 Orders
+              </button>
+
+              <button
+                onClick={() => setTab("profile")}
+                className={`
+                px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                ${
+                  tab === "profile"
+                    ? "bg-gradient-to-r from-[#FF76B9] to-[#ffa3cf] text-white shadow-md"
+                    : "text-[#6d4b53] hover:text-[#FF76B9] cursor-pointer"
+                }
+                `}
+              >
+                Profile
               </button>
             </div>
           </div>
@@ -163,25 +167,113 @@ export default function Account() {
         </div>
 
         {/* ORDERS TAB */}
-
         {tab === "orders" && (
           <>
             <h2 className="text-2xl font-medium mb-6">Orders</h2>
 
-            <div className="bg-white rounded-xl border border-gray-200 py-16 mb-40 text-center">
-              <p className="text-lg font-medium">No orders yet</p>
+            {ordersLoading ? (
+              // <p className="text-center py-20">Loading orders...</p>
+              <OrdersSkeleton />
+            ) : orders.length === 0 ? (
+              <div className="bg-white rounded-xl border py-16 text-center">
+                <p className="text-lg font-medium">No orders yet</p>
+                <p className="text-gray-500 mt-2">
+                  Go to store to place an order.
+                </p>
 
-              <p className="text-gray-500 mt-2">
-                Go to store to place an order.
-              </p>
+                <button
+                  onClick={() => navigate("/shop-all")}
+                  className="mt-6 px-6 py-3 bg-[#FF76B9] text-white rounded-full"
+                >
+                  Start Shopping
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-5">
+                {orders.map((order) => (
+                  <div
+                    key={order.id}
+                    onClick={() => navigate(`/orders/${order.id}`)}
+                    className="
+                      group
+                      bg-white
+                      border border-[#f3d2d9]
+                      rounded-2xl p-6
+                      shadow-[0_8px_25px_rgba(255,118,185,0.08)]
+                      cursor-pointer
+                      transition-all duration-300
+                      hover:shadow-[0_15px_45px_rgba(255,118,185,0.18)]
+                      hover:-translate-y-[3px]
+                    "
+                  >
+                    {/* TOP */}
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="text-[11px] tracking-wide text-[#a07a83]">
+                          ORDER ID
+                        </p>
 
-              <button
-                onClick={() => navigate("/shop-all")}
-                className="mt-6 px-6 py-3 bg-[#FF76B9] text-white rounded-full cursor-pointer"
-              >
-                Start Shopping
-              </button>
-            </div>
+                        <p className="font-semibold text-[#2b1b1f] text-sm mt-1">
+                          {order.order_number}
+                        </p>
+                      </div>
+
+                      <span
+                        className={`text-xs px-3 py-[6px] rounded-full font-medium capitalize
+                        ${
+                          order.status === "confirmed"
+                            ? "bg-green-100 text-green-600"
+                            : order.status === "processing"
+                              ? "bg-blue-100 text-blue-600"
+                              : order.status === "cancelled"
+                                ? "bg-red-100 text-red-500"
+                                : "bg-yellow-100 text-yellow-600"
+                        }
+                      `}
+                      >
+                        {order.status}
+                      </span>
+                    </div>
+
+                    {/* ADDRESS */}
+                    <div className="flex items-start gap-2 text-sm text-[#6d4b53] mb-4">
+                      <span className="text-[#FF76B9] mt-[2px]">📍</span>
+                      <p className="line-clamp-2 leading-relaxed">
+                        {order.address}
+                      </p>
+                    </div>
+
+                    {/* FOOTER */}
+                    <div className="flex justify-between items-center pt-4 border-t border-[#f3d2d9]">
+                      <p className="text-xs text-[#8b6a72]">
+                        {new Date(order.created_at).toLocaleDateString()}
+                      </p>
+
+                      <div className="flex items-center gap-3">
+                        <p className="font-semibold text-[#FF76B9] text-sm">
+                          ₹{order.total}
+                        </p>
+
+                        {/* ARROW */}
+                        <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FFF1F6] group-hover:bg-[#FF76B9] transition-all duration-300">
+                          <svg
+                            className="w-4 h-4 text-[#FF76B9] group-hover:text-white group-hover:translate-x-[2px] transition-all duration-300"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M9 6l6 6-6 6" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </>
         )}
 
@@ -460,5 +552,49 @@ export default function Account() {
         )}
       </div>
     </section>
+  );
+}
+
+function OrdersSkeleton() {
+  return (
+    <div className="space-y-5 animate-pulse">
+      {[...Array(2)].map((_, i) => (
+        <div
+          key={i}
+          className="
+            bg-white
+            border border-[#f3d2d9]
+            rounded-2xl p-6
+            shadow-[0_6px_20px_rgba(255,118,185,0.06)]
+          "
+        >
+          {/* TOP */}
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <div className="h-3 w-20 bg-[#f6dce4] rounded mb-2"></div>
+              <div className="h-4 w-32 bg-[#efc6d4] rounded"></div>
+            </div>
+
+            <div className="h-6 w-20 bg-[#f6dce4] rounded-full"></div>
+          </div>
+
+          {/* ADDRESS */}
+          <div className="mb-4 space-y-2">
+            <div className="h-3 w-full bg-[#f6dce4] rounded"></div>
+            <div className="h-3 w-[80%] bg-[#f6dce4] rounded"></div>
+          </div>
+
+          {/* FOOTER */}
+          <div className="flex justify-between items-center pt-4 border-t border-[#f3d2d9]">
+            <div className="h-3 w-24 bg-[#efc6d4] rounded"></div>
+
+            <div className="flex items-center gap-3">
+              <div className="h-4 w-16 bg-[#FFB3D1]/70 rounded"></div>
+              <div className="w-8 h-8 bg-[#f6dce4] rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

@@ -64,22 +64,22 @@ export default function OrderSuccess() {
         {/* BUTTONS */}
 
         <div className="flex gap-4 mt-8">
-          {/* CONTINUE SHOPPING */}
-
-          <button
-            onClick={() => navigate("/shop-all")}
-            className="flex-1 py-3 border border-[#FF76B9] text-[#FF76B9] rounded-xl text-sm hover:bg-[#FF76B9] hover:text-white transition"
-          >
-            Continue Shopping
-          </button>
-
           {/* TRACK ORDER */}
 
           <button
-            onClick={() => navigate("/track-order")}
-            className="flex-1 py-3 bg-gradient-to-r from-[#FF76B9] to-[#ff9fcc] text-white rounded-xl text-sm shadow-md hover:opacity-90 transition"
+            onClick={() => navigate("/profile")}
+            className="flex-1 py-3 bg-gradient-to-r from-[#FF76B9] to-[#ff9fcc] text-white rounded-xl text-sm shadow-md hover:opacity-90 transition cursor-pointer"
           >
-            Track Order
+            View Order
+          </button>
+
+          {/* CONTINUE SHOPPING */}
+
+          <button
+            onClick={() => navigate("/")}
+            className="flex-1 py-3 border border-[#FF76B9] text-[#FF76B9] rounded-xl text-sm hover:bg-[#FF76B9] hover:text-white transition cursor-pointer"
+          >
+            Continue Shopping
           </button>
         </div>
 

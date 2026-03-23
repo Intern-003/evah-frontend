@@ -19,11 +19,7 @@ export default function Wishlist() {
   const [loadingId, setLoadingId] = useState(null);
 
   if (loading) {
-    return (
-      <div className="text-center mt-20 py-40 text-[#6d4b53]">
-        Loading wishlist...
-      </div>
-    );
+    return <WishlistSkeleton />;
   }
 
   if (error) {
@@ -184,6 +180,59 @@ export default function Wishlist() {
             ))}
           </div>
         )}
+      </div>
+    </section>
+  );
+}
+
+function WishlistSkeleton() {
+  return (
+    <section className="mt-32 py-24 bg-gradient-to-b from-[#FFF7F9] to-white min-h-screen animate-pulse">
+      <div className="max-w-[1300px] mx-auto px-6">
+        {/* HEADER */}
+        <div className="text-center mb-16">
+          <div className="h-3 w-32 bg-[#f6dce4] rounded mx-auto mb-4"></div>
+          <div className="h-8 w-40 bg-[#efc6d4] rounded mx-auto"></div>
+        </div>
+
+        {/* GRID */}
+        <div className="grid md:grid-cols-4 gap-10">
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="
+                bg-white p-6
+                rounded-[28px_28px_40px_28px]
+                border border-[#f3d2d9]
+                shadow-[0_10px_25px_rgba(228,163,177,0.12)]
+              "
+            >
+              {/* REMOVE BTN */}
+              <div className="flex justify-end mb-2">
+                <div className="w-8 h-8 rounded-full bg-[#f6dce4]"></div>
+              </div>
+
+              {/* IMAGE */}
+              <div className="h-[180px] bg-[#f6dce4] rounded mb-6"></div>
+
+              {/* TITLE */}
+              <div className="h-4 w-32 bg-[#efc6d4] rounded mb-2"></div>
+
+              {/* DESC */}
+              <div className="h-3 w-full bg-[#f6dce4] rounded mb-1"></div>
+              <div className="h-3 w-[80%] bg-[#f6dce4] rounded mb-3"></div>
+
+              {/* PRICE */}
+              <div className="flex gap-2 mb-4">
+                <div className="h-3 w-12 bg-[#f6dce4] rounded"></div>
+                <div className="h-4 w-14 bg-[#FFB3D1]/70 rounded"></div>
+              </div>
+
+              {/* BUTTON */}
+              <div className="h-9 w-full bg-[#f6dce4] rounded-full"></div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
