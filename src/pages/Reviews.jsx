@@ -26,9 +26,7 @@ export default function Reviews() {
   const paginatedReviews = filteredReviews.slice(startIndex, endIndex);
 
   if (loading) {
-    return (
-      <div className="text-center py-40 text-[#6d4b53]">Loading reviews...</div>
-    );
+    return <ReviewsSkeleton />;
   }
 
   /* Reset page when filter changes */
@@ -180,5 +178,86 @@ function Stars({ rating }) {
         </span>
       ))}
     </div>
+  );
+}
+
+/* ---------------- Skeleton ---------------- */
+
+function ReviewsSkeleton() {
+  return (
+    <section className="bg-[#FFF8FA] py-24 mt-24 animate-pulse">
+      <div className="max-w-[1100px] mx-auto px-6">
+        {/* HEADER */}
+        <div className="text-center mb-16">
+          <div className="h-8 w-64 bg-[#efc6d4] rounded mx-auto mb-4"></div>
+
+          <div className="flex justify-center items-center gap-3 mb-2">
+            <div className="h-10 w-12 bg-[#efc6d4] rounded"></div>
+            <div className="flex gap-1">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="w-4 h-4 bg-[#f6dce4] rounded"></div>
+              ))}
+            </div>
+          </div>
+
+          <div className="h-3 w-40 bg-[#f6dce4] rounded mx-auto"></div>
+        </div>
+
+        {/* FILTER */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="h-4 w-32 bg-[#efc6d4] rounded"></div>
+          <div className="h-9 w-32 bg-[#f6dce4] rounded-full"></div>
+        </div>
+
+        <hr className="border-[#f1cfd6] mb-10" />
+
+        {/* REVIEWS LIST */}
+        <div className="space-y-10">
+          {[...Array(2)].map((_, i) => (
+            <div key={i} className="pb-10 border-b border-[#f1cfd6]">
+              {/* TOP */}
+              <div className="flex justify-between items-start">
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-full bg-[#f6dce4]"></div>
+
+                  <div>
+                    <div className="h-3 w-24 bg-[#efc6d4] rounded mb-2"></div>
+                    <div className="h-3 w-20 bg-[#f6dce4] rounded"></div>
+                  </div>
+                </div>
+
+                <div className="h-3 w-20 bg-[#f6dce4] rounded"></div>
+              </div>
+
+              {/* RATING */}
+              <div className="mt-4 flex items-center gap-3">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-4 h-4 bg-[#f6dce4] rounded"></div>
+                  ))}
+                </div>
+                <div className="h-3 w-32 bg-[#efc6d4] rounded"></div>
+              </div>
+
+              {/* TEXT */}
+              <div className="mt-3 space-y-2">
+                <div className="h-3 w-full bg-[#f6dce4] rounded"></div>
+                <div className="h-3 w-[90%] bg-[#f6dce4] rounded"></div>
+                <div className="h-3 w-[70%] bg-[#f6dce4] rounded"></div>
+              </div>
+
+              {/* PRODUCT */}
+              <div className="mt-3 h-3 w-40 bg-[#f6dce4] rounded"></div>
+
+              {/* ACTIONS */}
+              <div className="mt-4 flex justify-end gap-3">
+                <div className="h-3 w-20 bg-[#f6dce4] rounded"></div>
+                <div className="h-3 w-20 bg-[#f6dce4] rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

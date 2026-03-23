@@ -40,7 +40,7 @@ export default function GiftCollections() {
   );
 
   /* Pagination */
-  const itemsPerPage = 8;
+  const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1);
 
   /* Reset page on filter change */

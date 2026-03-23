@@ -22,13 +22,23 @@ export default function Footer() {
 
             {/* MINI SOCIAL */}
             <div className="flex gap-3 mt-6">
-              {["facebook", "instagram", "x"].map((s, i) => (
-                <div
+              {[
+                {
+                  name: "facebook",
+                  url: "https://www.facebook.com/profile.php?id=61573993740603",
+                },
+                { name: "instagram", url: "https://www.instagram.com/e_vah_/" },
+                { name: "x", url: "https://x.com/The_Evah" },
+              ].map((s, i) => (
+                <a
                   key={i}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-9 h-9 rounded-full border border-[#f3d2d9] flex items-center justify-center text-[#8b6a72] hover:bg-[#FF76B9] hover:text-white transition cursor-pointer"
                 >
-                  <i className={`fa-brands fa-${s}`}></i>
-                </div>
+                  <i className={`fa-brands fa-${s.name}`}></i>
+                </a>
               ))}
             </div>
           </div>

@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import OrderDetails from "./pages/OrderDetails";
 import Wishlist from "./pages/Wishlist";
 import ShopAll from "./pages/ShopAll";
 import NewArrivals from "./pages/NewArrivals";
@@ -28,7 +29,6 @@ import TermsConditions from "./pages/TermsConditions";
 import CheckoutPage from "./pages/CheckoutPage";
 import PaymentWaiting from "./pages/PaymentWaiting";
 import OrderSuccess from "./pages/OrderSuccess";
-import TrackOrder from "./pages/TrackOrder";
 import Cart from "./pages/Cart";
 
 import AdminLayout from "./admin/layout/AdminLayout";
@@ -61,6 +61,7 @@ function App() {
     location.pathname === "/order-success" ||
     location.pathname === "/track-order" ||
     location.pathname === "/profile" ||
+    location.pathname.startsWith("/orders/") ||
     location.pathname.startsWith("/admin");
 
   return (
@@ -111,6 +112,8 @@ function App() {
           }
         />
 
+        <Route path="/orders/:id" element={<OrderDetails />} />
+
         <Route path="/shop-all" element={<ShopAll />} />
         <Route path="/new-arrivals" element={<NewArrivals />} />
         <Route path="/product/:id" element={<ProductDetails />} />
@@ -128,7 +131,6 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/payment" element={<PaymentWaiting />} />
         <Route path="/order-success" element={<OrderSuccess />} />
-        <Route path="/track-order" element={<TrackOrder />} />
         <Route path="/Cart" element={<Cart />} />
 
         {/* ADMIN PANEL */}

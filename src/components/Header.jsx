@@ -6,6 +6,7 @@ import AddProduct from "../admin/components/AddProduct";
 import Allproducts from "../admin/components/Allproducts";
 import AddCategory from "../admin/components/AddCategory";
 import AllCategory from "../admin/components/AllCategory";
+import SearchModal from "../components/SearchModal";
 
 const navItems = [
   { label: "AQUA PERFUME", path: "/aqua-perfume" },
@@ -96,8 +97,10 @@ export default function Header() {
   /* ================= ACTIVE STATE ================= */
   const active = isHomePage ? hovered || scrolled : true;
 
+  const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [addProductOpen, setAddProductOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("product");
 
   return (
@@ -121,11 +124,32 @@ export default function Header() {
           ${active ? "text-black" : "text-white"}
         `}
         >
+          {/* MOBILE HEADER */}
+          <div className="flex items-center justify-between md:hidden">
+            {/* LEFT - MENU */}
+            <button onClick={() => setMenuOpen(true)}>☰</button>
+
+            {/* LOGO */}
+            <h1
+              onClick={() => {
+                navigate("/");
+                window.location.reload();
+              }}
+              className="text-[24px] tracking-[0.3em] font-medium"
+            >
+              EVAH
+            </h1>
+
+            {/* RIGHT - SEARCH */}
+            <button onClick={() => setSearchOpen(true)}>🔍</button>
+          </div>
           {/* TOP ROW */}
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between"> */}
+          <div className="hidden md:flex items-center justify-between">
             {/* SEARCH */}
             <button
               aria-label="Search"
+              onClick={() => setSearchOpen(true)}
               className="opacity-90 hover:opacity-100 transition cursor-pointer"
             >
               <svg
@@ -327,12 +351,18 @@ export default function Header() {
                   {cartLoading ? "" : `₹${subtotal}`}
                 </span>
               </button>
+
+              <SearchModal
+                open={searchOpen}
+                onClose={() => setSearchOpen(false)}
+              />
               <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
             </div>
           </div>
 
           {/* NAVIGATION */}
-          <nav className="mt-7">
+          {/* <nav className="mt-7"> */}
+          <nav className="mt-7 hidden md:block">
             <ul className="flex justify-center gap-12 text-[12px] tracking-[0.28em] font-light">
               {navItems.map((item) => (
                 <li
@@ -378,6 +408,28 @@ export default function Header() {
           </nav>
         </div>
       </header>
+
+      {menuOpen && (
+        <div className="fixed inset-0 bg-white z-[999] p-6">
+          <div className="flex justify-between mb-6">
+            <h2>Menu</h2>
+            <button onClick={() => setMenuOpen(false)}>✕</button>
+          </div>
+
+          {navItems.map((item) => (
+            <p
+              key={item.label}
+              onClick={() => {
+                navigate(item.path);
+                setMenuOpen(false);
+              }}
+              className="mb-4"
+            >
+              {item.label}
+            </p>
+          ))}
+        </div>
+      )}
 
       {addProductOpen && (
         <div
