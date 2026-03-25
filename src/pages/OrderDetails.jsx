@@ -214,7 +214,11 @@ export default function OrderDetails() {
                   className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#FFF5F8] transition cursor-pointer"
                 >
                   <img
-                    src={item.product?.image_url}
+                    // src={item.product?.image_url}
+                    src={item.product.image_url.replace(
+                      "/evah_backend/storage",
+                      "/evah_backend/public/storage",
+                    )}
                     className="w-16 h-16 object-contain bg-white rounded-lg"
                   />
 

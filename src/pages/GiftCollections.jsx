@@ -4,6 +4,10 @@ import { usePost } from "../hooks/usePost";
 import toast from "react-hot-toast";
 import ProductCard from "../components/ProductCard";
 
+import GiftsImg from "../../src/assets/images/Gifts.png";
+import womencollectionssImg from "../../src/assets/images/womencollectionss.jpeg";
+import mencollectionssImg from "../../src/assets/images/mencollectionss.jpeg";
+
 const categories = ["Perfumes Gifts?", "Sets & collections?"];
 const priceFilters = ["All", "Affordable", "Premium", "Luxury"];
 
@@ -83,7 +87,7 @@ export default function GiftCollections() {
       {/* ================= HERO ================= */}
       <section className="relative w-full h-[480px] overflow-hidden">
         <img
-          src="../src/assets/images/Gifts.png"
+          src={GiftsImg}
           alt="Gift Collection"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -192,7 +196,11 @@ export default function GiftCollections() {
                       description: product.description,
                       actualPrice: product.sale_price,
                       salePrice: product.price,
-                      image: product.image_url,
+                      // image: product.image_url,
+                      image: product.image_url?.replace(
+                        "/evah_backend/storage",
+                        "/evah_backend/public/storage",
+                      ),
                       category: product.category.name,
                     }}
                   />
@@ -239,9 +247,9 @@ export default function GiftCollections() {
             </p>
           </div>
 
-          <div className="max-w-[1400px] mx-auto px-10 space-y-36">
+          <div className="max-w-[1400px] mx-auto px-4 md:px-10 space-y-16 md:space-y-36">
             {/* ===== GENTLEMAN COLLECTION ===== */}
-            <div className="grid md:grid-cols-2 gap-24 items-center">
+            <div className="grid md:grid-cols-2 gap-10 md:gap-24 items-center">
               {/* LEFT CONTENT */}
               <div>
                 <p className="text-[11px] tracking-[0.3em] uppercase text-[#b88994] mb-4">
@@ -293,7 +301,11 @@ export default function GiftCollections() {
                           )}
 
                           <img
-                            src={product.image_url}
+                            // src={product.image_url}
+                            src={product.image_url.replace(
+                              "/evah_backend/storage",
+                              "/evah_backend/public/storage",
+                            )}
                             alt={product.name}
                             className="
                             max-h-[120px]
@@ -352,22 +364,22 @@ export default function GiftCollections() {
               <div className="relative">
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#fbe3e8] to-transparent blur-2xl opacity-70" />
                 <img
-                  src="/src/assets/images/mencollectionss.jpeg"
+                  src={mencollectionssImg}
                   alt="Gentleman Collection"
-                  className="relative z-10 w-full rounded-3xl object-cover shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
+                  className="hidden md:block relative z-10 w-full rounded-3xl object-cover shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
                 />
               </div>
             </div>
 
             {/* ===== CONFIDENT WOMAN COLLECTION ===== */}
-            <div className="grid md:grid-cols-2 gap-24 items-center">
+            <div className="grid md:grid-cols-2 gap-10 md:gap-24 items-center">
               {/* RIGHT IMAGE */}
               <div className="relative">
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#fbe3e8] to-transparent blur-2xl opacity-70" />
                 <img
-                  src="/src/assets/images/womencollectionss.jpeg"
+                  src={womencollectionssImg}
                   alt="Confident Woman Collection"
-                  className="relative z-10 w-full rounded-3xl object-cover shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
+                  className="hidden md:block relative z-10 w-full rounded-3xl object-cover shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
                 />
               </div>
 
@@ -422,7 +434,11 @@ export default function GiftCollections() {
                           )}
 
                           <img
-                            src={product.image_url}
+                            // src={product.image_url}
+                            src={product.image_url.replace(
+                              "/evah_backend/storage",
+                              "/evah_backend/public/storage",
+                            )}
                             alt={product.name}
                             className="
                             max-h-[120px]

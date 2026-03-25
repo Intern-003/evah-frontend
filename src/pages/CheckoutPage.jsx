@@ -4,6 +4,8 @@ import { useGet } from "../hooks/useGet";
 import { usePost } from "../hooks/usePost";
 import CheckoutSkeleton from "../components/CheckoutSkeleton";
 
+import Evah_logoImg from "/src/assets/images/Evah_logo.png";
+
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { data, loading, error } = useGet("cart");
@@ -29,7 +31,11 @@ export default function CheckoutPage() {
       name: item.product.name,
       price: item.product.sale_price ?? item.product.price,
       qty: item.quantity,
-      image: item.product.image_url,
+      // image: item.product.image_url,
+      image: item.product.image_url?.replace(
+        "/evah_backend/storage",
+        "/evah_backend/public/storage",
+      ),
     })) || [];
 
   const subtotal = cart.reduce((t, i) => t + i.price * i.qty, 0);
@@ -88,7 +94,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-[#FFF6FA]">
-      <div className="max-w-[1000px] mx-auto grid grid-cols-[1fr_420px] gap-20 px-10 py-20">
+      <div className="max-w-[1000px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-20 px-4 sm:px-6 lg:px-10 py-10 lg:py-20">
         {/* LEFT SIDE */}
 
         <button
@@ -113,7 +119,7 @@ export default function CheckoutPage() {
             {/* LOGO */}
             <div className="flex justify-center">
               <img
-                src="../src/assets/images/Evah_logo.png"
+                src={Evah_logoImg}
                 className="w-[130px] hover:scale-105 transition duration-300"
               />
             </div>
@@ -124,7 +130,7 @@ export default function CheckoutPage() {
               </p>
 
               <div className="bg-white border border-[#f2c9d8] rounded-xl p-3 shadow-sm">
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {/* gpay PAY */}
 
                   <button
@@ -223,7 +229,7 @@ export default function CheckoutPage() {
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:border-[#FF76B9] outline-none transition"
               />
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <input
                   name="city"
                   value={form.city}
@@ -398,7 +404,6 @@ export default function CheckoutPage() {
               {/* PAY BUTTON */}
 
               <button
-                // onClick={() => navigate("/payment")}
                 onClick={handlePay}
                 className="
                 w-full
@@ -431,13 +436,13 @@ export default function CheckoutPage() {
 
         <div
           className="
+          w-full
             bg-[#FBE9F1]
             p-8
             rounded-2xl
             shadow-[0_20px_60px_rgba(255,118,185,0.15)]
             h-fit
-            sticky
-            top-10
+            lg:sticky lg:top-10
             space-y-8
             "
         >
@@ -474,8 +479,6 @@ export default function CheckoutPage() {
                   <p className="text-sm font-medium text-[#2b1b1f]">
                     {item.name}
                   </p>
-
-                  {/* <p className="text-xs text-gray-500">1.7 Fl Oz / 50 ML</p> */}
                 </div>
 
                 <p className="text-sm font-semibold text-[#2b1b1f]">
@@ -487,7 +490,7 @@ export default function CheckoutPage() {
 
           {/* DISCOUNT */}
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               placeholder="Discount code or gift card"
               className="flex-1 border border-[#f2c9d8] rounded-md px-4 py-3 bg-white"

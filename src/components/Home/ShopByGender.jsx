@@ -1,5 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
+import womenImg from "../../assets/images/women.jpeg";
+import menImg from "../../assets/images/men.jpeg";
+import unisexImg from "../../assets/images/unisex.jpeg";
+
 export default function ShopByGender() {
   const navigate = useNavigate();
 
@@ -7,17 +11,17 @@ export default function ShopByGender() {
     {
       title: "WOMEN",
       cta: "SHOP WOMEN",
-      image: "../src/assets/images/women.jpeg",
+      image: womenImg,
     },
     {
       title: "MEN",
       cta: "SHOP MEN",
-      image: "../src/assets/images/men.jpeg",
+      image: menImg,
     },
     {
       title: "UNISEX",
       cta: "SHOP UNISEX",
-      image: "../src/assets/images/unisex.jpeg",
+      image: unisexImg,
     },
   ];
 

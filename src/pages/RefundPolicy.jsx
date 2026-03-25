@@ -86,7 +86,7 @@ export default function RefundPolicy() {
               For return requests or assistance, please contact our support team
               at{" "}
               <span className="font-medium text-[#2b1b1f]">
-                hello@evahperfume.com
+                Evah.fragrance@gmail.com
               </span>{" "}
               with your order number and details.
             </p>

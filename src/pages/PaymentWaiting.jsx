@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { usePost } from "../hooks/usePost";
 
+import gpayImg from "../../src/assets/images/gpay.png";
+import paytmImg from "../../src/assets/images/paytm.png";
+import phonepeImg from "../../src/assets/images/phonepe.png";
+
 export default function PaymentWaiting() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -98,23 +102,11 @@ export default function PaymentWaiting() {
 
           {/* UPI APPS */}
           <div className="flex justify-center gap-5 mt-4 opacity-70">
-            <img
-              src="../src/assets/images/gpay.png"
-              className="h-5"
-              alt="gpay"
-            />
+            <img src={gpayImg} className="h-5" alt="gpay" />
 
-            <img
-              src="../src/assets/images/paytm.png"
-              className="h-5"
-              alt="paytm"
-            />
+            <img src={paytmImg} className="h-5" alt="paytm" />
 
-            <img
-              src="../src/assets/images/phonepe.png"
-              className="h-5"
-              alt="phonepe"
-            />
+            <img src={phonepeImg} className="h-5" alt="phonepe" />
           </div>
 
           {/* HELP */}

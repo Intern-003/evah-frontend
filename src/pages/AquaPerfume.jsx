@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import { useGet } from "../hooks/useGet";
 
+import aquapageImg from "../../src/assets/images/aquapage.png";
+
 const categories = [
   { label: "All", slug: "all" },
   { label: "Marine", slug: "marine" },
@@ -71,7 +73,7 @@ export default function AquaPerfume() {
       {/* ================= HERO ================= */}
       <div className="relative h-[650px] rounded-b-[20px] overflow-hidden">
         <img
-          src="../src/assets/images/aquapage.png"
+          src={aquapageImg}
           alt="Aqua Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -97,34 +99,50 @@ export default function AquaPerfume() {
 
       {/* ================= FILTER + SORT ================= */}
       <div className="max-w-[1300px] mx-auto px-6 py-16">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-          {/* Categories */}
-          <div className="flex gap-4 flex-wrap">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 md:mb-12 gap-4 md:gap-6">
+          {/* CATEGORIES */}
+          <div className="flex gap-2 md:gap-4 overflow-x-auto md:flex-wrap pb-1">
             {categories.map((cat) => (
               <button
                 key={cat.slug}
                 onClick={() => setActiveCategory(cat.slug)}
-                className={`px-6 py-2 rounded-full text-sm transition ${
-                  activeCategory === cat.slug
-                    ? "bg-[#7bb7e3] text-white shadow-md"
-                    : "bg-[#fff1f4] text-[#1f2b3a] hover:bg-[#e3f2ff] cursor-pointer"
-                }`}
+                className={`
+                  whitespace-nowrap
+                  px-4 md:px-6 py-2
+                  rounded-full
+                  text-xs md:text-sm
+                  transition
+                  ${
+                    activeCategory === cat.slug
+                      ? "bg-[#7bb7e3] text-white shadow-md"
+                      : "bg-[#fff1f4] text-[#1f2b3a] hover:bg-[#e3f2ff] cursor-pointer"
+                  }
+                `}
               >
                 {cat.label}
               </button>
             ))}
           </div>
 
-          {/* Sort */}
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="border border-[#d6e9f8] px-4 py-2 rounded-full text-sm bg-white"
-          >
-            <option value="default">Sort By</option>
-            <option value="low">Price: Low → High</option>
-            <option value="high">Price: High → Low</option>
-          </select>
+          {/* SORT */}
+          <div className="w-full md:w-auto">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="
+                w-full md:w-auto
+                border border-[#d6e9f8]
+                px-4 py-2
+                rounded-full
+                text-xs md:text-sm
+                bg-white
+              "
+            >
+              <option value="default">Sort By</option>
+              <option value="low">Price: Low → High</option>
+              <option value="high">Price: High → Low</option>
+            </select>
+          </div>
         </div>
 
         {/* ================= PRODUCT GRID ================= */}
@@ -152,7 +170,11 @@ export default function AquaPerfume() {
                     description: item.description,
                     actualPrice: item.sale_price,
                     salePrice: item.price,
-                    image: item.image_url,
+                    // image: item.image_url,
+                    image: item.image_url?.replace(
+                      "/evah_backend/storage",
+                      "/evah_backend/public/storage",
+                    ),
                     // category: product.category.name, issue bcoz of parent id
                   }}
                 />

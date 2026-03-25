@@ -1,26 +1,30 @@
 import { useNavigate } from "react-router-dom";
 
+import perfume1Img from "/src/assets/images/perfume1.png";
+import perfume2Img from "/src/assets/images/perfume2.jpg";
+import perfume3Img from "/src/assets/images/perfume3.jpg";
+
 const products = [
   {
     id: 1,
     name: "Amber Rouge Saffron",
     subtitle: "Inspired by MFK's Baccarat Rouge 540",
     price: "₹4,092.53",
-    image: "../src/assets/images/perfume1.png",
+    image: perfume1Img,
   },
   {
     id: 2,
     name: "Mojave Ghost",
     subtitle: "Inspired by Byredo Mojave Ghost",
     price: "₹3,637.70",
-    image: "../src/assets/images/perfume2.jpg",
+    image: perfume2Img,
   },
   {
     id: 3,
     name: "Love Don't Be Shy",
     subtitle: "Inspired by Kilian's Love, Don't Be Shy",
     price: "₹3,910.60",
-    image: "../src/assets/images/perfume3.jpg",
+    image: perfume3Img,
   },
 ];
 

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import giftingImg from "../../assets/images/gifting.jpeg";
 
 export default function GiftableByDesign() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function GiftableByDesign() {
           {/* LEFT IMAGE */}
           <div className="relative rounded-[26px] overflow-hidden bg-[#f6dbe2]">
             <img
-              src="../src/assets/images/gifting.jpeg"
+              src={giftingImg}
               alt="Giftable by Design"
               className="w-full h-[480px] object-cover"
             />

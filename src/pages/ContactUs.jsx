@@ -19,7 +19,7 @@ export default function ContactUs() {
           bottom-left corner of your screen — our team responds promptly and
           personally. You may also email us at{" "}
           <span className="font-medium text-[#2b1b1f]">
-            hello@evahperfume.com
+            Evah.fragrance@gmail.com
           </span>
           , and we’ll be happy to assist you.
         </p>
@@ -67,18 +67,21 @@ export default function ContactUs() {
             <ul className="space-y-4 text-sm text-[#6d4b53]">
               <li className="flex items-start gap-3">
                 <LocationIcon />
-                <span>1237 E Warner Avenue, Santa Ana, CA 92705</span>
+                <span>
+                  316 Laxmi Plaza, Laxmi Industrial Estate, Andheri West,
+                  Mumbai, Maharashtra - 400053.
+                </span>
               </li>
 
               <li className="flex items-start gap-3">
                 <PhoneIcon />
-                <span>949-464-7264</span>
+                <span>+91 84500 07614</span>
               </li>
 
               <li className="flex items-start gap-3">
                 <MailIcon />
                 <span className="font-medium text-[#2b1b1f]">
-                  hello@evahperfume.com
+                  Evah.fragrance@gmail.com
                 </span>
               </li>
             </ul>

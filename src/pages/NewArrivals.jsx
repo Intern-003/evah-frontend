@@ -3,6 +3,8 @@ import ProductCard from "../components/ProductCard";
 import FiltersSidebar from "../components/FiltersSidebar";
 import { useGet } from "../hooks/useGet";
 
+import newarrivalsImg from "../../src/assets/images/newarrivals.png";
+
 const categories = ["women", "men", "unisex", "All"];
 
 export default function NewArrivals() {
@@ -21,6 +23,8 @@ export default function NewArrivals() {
   useEffect(() => {
     setCurrentPage(1);
   }, [activeCategory, filters]);
+
+  const [showFilters, setShowFilters] = useState(false);
 
   const filteredProducts = products.filter((product) => {
     // CATEGORY
@@ -75,7 +79,7 @@ export default function NewArrivals() {
       {/* ================= TOP BANNER ================= */}
       <section className="relative w-full h-[490px] overflow-hidden">
         <img
-          src="../src/assets/images/newarrivals.png"
+          src={newarrivalsImg}
           alt="New Arrivals"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -117,7 +121,26 @@ export default function NewArrivals() {
       {/* ================= CONTENT ================= */}
       <section className="bg-white py-16">
         <div className="max-w-[1440px] mx-auto px-10 flex gap-10">
-          <FiltersSidebar filters={filters} setFilters={setFilters} />
+          {/* <FiltersSidebar filters={filters} setFilters={setFilters} /> */}
+          {/* SIDEBAR */}
+          <div
+            className={`
+                      fixed md:static top-0 left-0 h-full md:h-auto w-[80%] md:w-auto
+                      bg-white z-[999] md:z-auto
+                      transform transition-transform duration-300
+                      ${showFilters ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+                    `}
+          >
+            <FiltersSidebar filters={filters} setFilters={setFilters} />
+          </div>
+
+          {/* BACKDROP */}
+          {showFilters && (
+            <div
+              onClick={() => setShowFilters(false)}
+              className="fixed inset-0 bg-black/40 z-[998] md:hidden"
+            />
+          )}
 
           <div className="flex-1">
             {/* TOP BAR */}
@@ -128,6 +151,22 @@ export default function NewArrivals() {
                 </h2>
                 <span className="w-12 h-[2px] bg-[#e4a3b1] mt-1 rounded-full" />
               </div>
+
+              {/* RIGHT - FILTER BUTTON (MOBILE ONLY) */}
+              <button
+                onClick={() => setShowFilters(true)}
+                className="
+                  md:hidden
+                  px-4 py-2
+                  text-xs
+                  border border-[#f3cdd5]
+                  rounded-full
+                  bg-white
+                  shadow-sm
+                "
+              >
+                Filters
+              </button>
             </div>
 
             {/* ERROR */}
@@ -166,7 +205,11 @@ export default function NewArrivals() {
                       description: product.description,
                       actualPrice: product.sale_price,
                       salePrice: product.price,
-                      image: product.image_url,
+                      // image: product.image_url,
+                      image: product.image_url?.replace(
+                        "/evah_backend/storage",
+                        "/evah_backend/public/storage",
+                      ),
                       category: product.category?.name,
 
                       type: product.type,

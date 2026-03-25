@@ -23,7 +23,11 @@ export default function Cart() {
       name: item.product.name,
       price: item.product.sale_price ?? item.product.price,
       qty: item.quantity,
-      image: item.product.image_url,
+      // image: item.product.image_url,
+      image: item.product.image_url?.replace(
+        "/evah_backend/storage",
+        "/evah_backend/public/storage",
+      ),
     })) || [];
 
   const updateQty = async (id, type) => {
@@ -133,7 +137,7 @@ export default function Cart() {
                   </p>
 
                   {/* QTY */}
-                  <div className="flex items-center mt-5 gap-4">
+                  <div className="mt-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
                     <div className="flex items-center border border-[#f1cfd6] rounded-full px-3">
                       <button
                         onClick={() => updateQty(item.id, "dec")}
@@ -154,7 +158,12 @@ export default function Cart() {
 
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="text-sm text-[#6d4b53] hover:text-red-500"
+                      className="
+                        text-xs md:text-sm
+                        text-red-500 md:text-[#6d4b53]
+                        md:hover:text-red-500
+                        text-left md:text-center
+                      "
                     >
                       Remove
                     </button>
@@ -162,7 +171,7 @@ export default function Cart() {
                 </div>
 
                 {/* PRICE */}
-                <div className="text-right">
+                <div className="hidden md:block text-right">
                   <p className="font-semibold text-[#2b1b1f]">
                     ₹{item.price * item.qty}
                   </p>
@@ -233,7 +242,14 @@ export default function Cart() {
 
             {/* CHECKOUT */}
             <button
-              onClick={() => navigate("/checkout")}
+              onClick={() => {
+                if (cart.length === 0) {
+                  toast.error("Your cart is empty 🛒");
+                  return;
+                }
+
+                navigate("/checkout");
+              }}
               className="
               mt-8 w-full py-4
               rounded-full
