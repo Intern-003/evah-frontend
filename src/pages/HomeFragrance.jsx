@@ -116,7 +116,11 @@ export default function HomeFragrance() {
                       description: item.description,
                       actualPrice: item.sale_price,
                       salePrice: item.price,
-                      image: item.image_url,
+                      // image: item.image_url,
+                      image: item.image_url?.replace(
+                        "/evah_backend/storage",
+                        "/evah_backend/public/storage",
+                      ),
                       // category: product.category.name, issue bcoz of parent id
                     }}
                   />

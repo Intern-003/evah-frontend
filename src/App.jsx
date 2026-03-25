@@ -38,6 +38,7 @@ import Products from "./admin/pages/Products";
 import Orders from "./admin/pages/Orders";
 import Customers from "./admin/pages/Customers";
 import ReviewsAdmin from "./admin/pages/Reviews";
+import ChatbotAdmin from "./admin/pages/Chatbot";
 import Coupons from "./admin/pages/Coupons";
 import Settings from "./admin/pages/Settings";
 
@@ -147,6 +148,7 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
           <Route path="reviews" element={<ReviewsAdmin />} />
+          <Route path="Chatbot" element={<ChatbotAdmin />} />
           <Route path="coupons" element={<Coupons />} />
           <Route path="settings" element={<Settings />} />
         </Route>

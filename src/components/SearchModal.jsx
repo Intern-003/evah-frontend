@@ -17,7 +17,7 @@ export default function SearchModal({ open, onClose }) {
 
       return (
         p.name.toLowerCase().includes(query.toLowerCase()) &&
-        productPrice <= Number(price)
+        productPrice <= price
       );
     })
     .slice(0, 12);
@@ -28,16 +28,16 @@ export default function SearchModal({ open, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-lg z-[999] flex justify-center items-start pt-8 animate-fadeIn"
+      className="fixed inset-0 bg-black/60 backdrop-blur-lg z-[999] flex justify-center items-start pt-0 md:pt-8 animate-fadeIn"
       onClick={onClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className="
-          w-[1100px]
-          h-[680px]
+          w-full md:w-[1100px]
+          h-[100vh] md:h-[680px]
           bg-gradient-to-br from-white to-[#fff6fa]
-          rounded-3xl
+          md:rounded-3xl
           shadow-[0_25px_80px_rgba(255,118,185,0.25)]
           overflow-hidden
           flex flex-col
@@ -45,13 +45,13 @@ export default function SearchModal({ open, onClose }) {
         "
       >
         {/* HEADER */}
-        <div className="p-6 flex items-center gap-4">
+        <div className="p-4 md:p-6 flex items-center gap-3">
           <input
             type="text"
             placeholder="Search luxury perfumes..."
             className="
               flex-1
-              px-5 py-3
+              px-4 md:px-5 py-2 md:py-3
               rounded-full
               bg-white
               shadow-inner
@@ -59,6 +59,7 @@ export default function SearchModal({ open, onClose }) {
               focus:outline-none
               focus:ring-2
               focus:ring-[#FF76B9]/30
+              text-sm
             "
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -66,19 +67,17 @@ export default function SearchModal({ open, onClose }) {
 
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-black text-xl transition cursor-pointer"
+            className="text-gray-400 hover:text-black text-lg md:text-xl"
           >
             ✕
           </button>
         </div>
 
         {/* BODY */}
-        <div className="flex flex-1 overflow-hidden">
-          {/* SIDEBAR */}
-          <div className="w-[240px] px-6 py-4">
-            <p className="text-sm font-semibold text-[#2b1b1f] mb-4">
-              Price Range
-            </p>
+        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+          {/* FILTERS */}
+          <div className="w-full md:w-[240px] px-4 md:px-6 py-4 border-b md:border-b-0 md:border-r border-[#f3d2d9]">
+            <p className="text-sm font-semibold mb-3">Price Range</p>
 
             <input
               type="range"
@@ -89,28 +88,26 @@ export default function SearchModal({ open, onClose }) {
               className="w-full accent-[#FF76B9]"
             />
 
-            <div className="flex justify-between text-xs text-gray-500 mt-2">
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>₹0</span>
               <span>₹{price}</span>
             </div>
 
             {/* TAGS */}
-            <div className="mt-8 space-y-2">
-              <p className="text-xs text-gray-400">Popular</p>
+            <div className="mt-4">
+              <p className="text-xs text-gray-400 mb-2">Popular</p>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex gap-2 overflow-x-auto">
                 {["Fresh", "Woody", "Luxury", "Office"].map((tag) => (
                   <span
                     key={tag}
                     className="
+                      whitespace-nowrap
                       px-3 py-1
                       text-xs
                       bg-[#FFF1F6]
                       text-[#FF76B9]
                       rounded-full
-                      hover:bg-[#FF76B9]
-                      hover:text-white
-                      transition
                       cursor-pointer
                     "
                   >
@@ -122,7 +119,7 @@ export default function SearchModal({ open, onClose }) {
           </div>
 
           {/* PRODUCTS */}
-          <div className="flex-1 overflow-y-auto px-6 pb-6">
+          <div className="flex-1 overflow-y-auto px-4 md:px-6 pb-6">
             {loading && (
               <p className="text-center text-gray-400">Loading products...</p>
             )}
@@ -130,36 +127,40 @@ export default function SearchModal({ open, onClose }) {
             {!loading && (
               <>
                 {filtered.length > 0 ? (
-                  <div className="grid grid-cols-3 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                     {filtered.map((item) => (
                       <div
                         key={item.id}
                         onClick={() => {
                           onClose();
-                          navigate(`/product/${item?.id}`);
+                          navigate(`/product/${item.id}`);
                         }}
                         className="
-                          bg-white/80 backdrop-blur-md
-                          rounded-2xl
-                          p-4
-                          hover:shadow-xl
-                          hover:-translate-y-1
-                          transition duration-300
+                          bg-white/80
+                          backdrop-blur-md
+                          rounded-xl md:rounded-2xl
+                          p-3 md:p-4
+                          hover:shadow-lg
+                          transition
                           cursor-pointer
                         "
                       >
-                        <div className="h-[150px] flex items-center justify-center">
+                        <div className="h-[110px] md:h-[150px] flex items-center justify-center">
                           <img
-                            src={item.image_url}
-                            className="h-full object-contain transition duration-300 hover:scale-105"
+                            // src={item.image_url}
+                            src={item.image_url.replace(
+                              "/evah_backend/storage",
+                              "/evah_backend/public/storage",
+                            )}
+                            className="h-full object-contain"
                           />
                         </div>
 
-                        <p className="mt-3 text-sm font-medium text-[#2b1b1f] line-clamp-2">
+                        <p className="mt-2 text-xs md:text-sm font-medium line-clamp-2">
                           {item.name}
                         </p>
 
-                        <p className="mt-2 text-sm font-semibold text-[#FF76B9]">
+                        <p className="mt-1 text-sm font-semibold text-[#FF76B9]">
                           ₹{item.sale_price || item.price}
                         </p>
                       </div>
@@ -167,34 +168,30 @@ export default function SearchModal({ open, onClose }) {
                   </div>
                 ) : (
                   <>
-                    <p className="text-center text-gray-400 mb-6">
+                    <p className="text-center text-gray-400 mb-4">
                       No Product Found
                     </p>
 
-                    <h3 className="font-medium mb-4 text-[#2b1b1f]">
-                      Recommended
-                    </h3>
+                    <h3 className="font-medium mb-3">Recommended</h3>
 
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                       {recommended.map((item) => (
                         <div
                           key={item.id}
                           className="
                             bg-white/80
-                            rounded-2xl
-                            p-4
-                            hover:shadow-lg
-                            transition
+                            rounded-xl md:rounded-2xl
+                            p-3 md:p-4
                           "
                         >
-                          <div className="h-[140px] flex items-center justify-center">
+                          <div className="h-[100px] md:h-[140px] flex items-center justify-center">
                             <img
                               src={item.image_url}
                               className="h-full object-contain"
                             />
                           </div>
 
-                          <p className="mt-3 text-sm line-clamp-2">
+                          <p className="mt-2 text-xs md:text-sm line-clamp-2">
                             {item.name}
                           </p>
                         </div>
@@ -208,7 +205,7 @@ export default function SearchModal({ open, onClose }) {
         </div>
       </div>
 
-      {/* ANIMATIONS */}
+      {/* ANIMATION */}
       <style>
         {`
           .animate-fadeIn {

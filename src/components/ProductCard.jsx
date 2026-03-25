@@ -12,6 +12,14 @@ export default function ProductCard({ product }) {
   const addToWishlist = async (e) => {
     e.stopPropagation();
 
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      toast.error("Please login to add to wishlist");
+      navigate("/login");
+      return;
+    }
+
     try {
       const res = await execute({
         product_id: product.id,
@@ -31,6 +39,15 @@ export default function ProductCard({ product }) {
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
+
+    const token = localStorage.getItem("token");
+
+    // ✅ LOGIN CHECK
+    if (!token) {
+      toast.error("Please login to add to cart");
+      navigate("/login"); // optional redirect
+      return;
+    }
 
     try {
       const res = await addToCart({

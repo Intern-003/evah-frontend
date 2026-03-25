@@ -121,7 +121,7 @@ export default function TermsConditions() {
               If you have questions regarding these Terms & Conditions, please
               contact us at{" "}
               <span className="font-medium text-[#2b1b1f]">
-                hello@evahperfume.com
+                Evah.fragrance@gmail.com
               </span>
               .
             </p>

@@ -8,6 +8,9 @@ import { useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import ProductDetailSkeleton from "../components/ProductDetailSkeleton";
 
+import flowersImg from "../../src/assets/images/flowers.png";
+import moredetailsImg from "../../src/assets/images/moredetails.png";
+
 export default function ProductDetails() {
   const navigate = useNavigate();
 
@@ -80,6 +83,15 @@ export default function ProductDetails() {
   const handleAddToCart = async (e) => {
     e.stopPropagation();
 
+    const token = localStorage.getItem("token");
+
+    // ✅ LOGIN CHECK
+    if (!token) {
+      toast.error("Please login to add to cart");
+      navigate("/login"); // optional redirect
+      return;
+    }
+
     try {
       const res = await addToCart({
         product_id: product.id,
@@ -97,6 +109,14 @@ export default function ProductDetails() {
 
   const addToWishlist = async (e) => {
     e.stopPropagation();
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      toast.error("Please login to add to wishlist");
+      navigate("/login");
+      return;
+    }
 
     try {
       const res = await addToWishlistApi({
@@ -168,7 +188,11 @@ export default function ProductDetails() {
 
           <div className="relative bg-white p-5 rounded-[40px] shadow-[0_25px_60px_rgba(228,163,177,0.25)]">
             <img
-              src={product.image_url}
+              // src={product.image_url}
+              src={product.image_url.replace(
+                "/evah_backend/storage",
+                "/evah_backend/public/storage",
+              )}
               alt={product.name}
               className="w-full max-h-[500px] object-contain transition duration-700 hover:scale-105"
             />
@@ -377,7 +401,7 @@ export default function ProductDetails() {
 
           {/* Background Image */}
           <img
-            src="../src/assets/images/flowers.png"
+            src={flowersImg}
             alt="Amber Floral"
             className="w-full h-[450px] object-cover"
           />
@@ -439,7 +463,11 @@ export default function ProductDetails() {
                   description: item.description,
                   actualPrice: item.sale_price,
                   salePrice: item.price,
-                  image: item.image_url,
+                  // image: item.image_url,
+                  image: item.image_url?.replace(
+                    "/evah_backend/storage",
+                    "/evah_backend/public/storage",
+                  ),
                 }}
               />
             ))}
@@ -496,7 +524,7 @@ export default function ProductDetails() {
           {/* RIGHT PYRAMID IMAGE */}
           <div className="relative flex justify-center">
             <img
-              src="../src/assets/images/moredetails.png"
+              src={moredetailsImg}
               alt="Fragrance Notes"
               className="
                 relative z-10
@@ -656,7 +684,11 @@ export default function ProductDetails() {
                   description: item.description,
                   actualPrice: item.sale_price,
                   salePrice: item.price,
-                  image: item.image_url,
+                  // image: item.image_url,
+                  image: item.image_url?.replace(
+                    "/evah_backend/storage",
+                    "/evah_backend/public/storage",
+                  ),
                 }}
               />
             ))}

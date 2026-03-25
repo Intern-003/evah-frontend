@@ -139,7 +139,11 @@ export default function Products() {
                   {/* IMAGE */}
                   <td className="px-5 py-3">
                     <img
-                      src={product.image_url}
+                      // src={product.image_url}
+                      src={product.image_url.replace(
+                        "/evah_backend/storage",
+                        "/evah_backend/public/storage",
+                      )}
                       alt={product.name}
                       className="w-12 h-12 object-cover rounded-lg border border-[#f3d2d9]"
                     />

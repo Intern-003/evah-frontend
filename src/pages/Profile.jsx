@@ -6,6 +6,8 @@ import { usePut } from "../hooks/usePut";
 import { useDelete } from "../hooks/useDelete";
 import toast from "react-hot-toast";
 
+import Evah_logoImg from "/src/assets/images/Evah_logo.png";
+
 export default function Account() {
   const navigate = useNavigate();
 
@@ -93,7 +95,7 @@ export default function Account() {
         {/* TOP NAV */}
         <div
           className="
-            flex items-center justify-between mb-14
+            flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-14
             bg-white/70 backdrop-blur-md
             border border-[#f3d2d9]
             shadow-[0_10px_40px_rgba(228,163,177,0.15)]
@@ -103,21 +105,18 @@ export default function Account() {
         >
           {/* LEFT SIDE */}
 
-          <div className="flex items-center gap-12">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 lg:gap-12 w-full">
             {/* LOGO */}
 
-            <img
-              src="/src/assets/images/Evah_logo.png"
-              className="w-[90px] object-contain"
-            />
+            <img src={Evah_logoImg} className="w-[80px] sm:w-[90px]" />
 
             {/* NAV TABS */}
 
-            <div className="flex gap-2 bg-[#FFF5F8] p-1 rounded-full">
+            <div className="flex flex-wrap sm:flex-nowrap gap-2 bg-[#FFF5F8] p-1 rounded-full w-full sm:w-auto">
               <button
                 onClick={() => setTab("orders")}
                 className={`
-                px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300
                 ${
                   tab === "orders"
                     ? "bg-gradient-to-r from-[#FF76B9] to-[#ffa3cf] text-white shadow-md"
@@ -131,7 +130,7 @@ export default function Account() {
               <button
                 onClick={() => setTab("profile")}
                 className={`
-                px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300
                 ${
                   tab === "profile"
                     ? "bg-gradient-to-r from-[#FF76B9] to-[#ffa3cf] text-white shadow-md"
@@ -150,8 +149,9 @@ export default function Account() {
             onClick={handleLogout}
             disabled={loading}
             className="
-              text-sm
-              px-5 py-2
+              w-full sm:w-auto
+              text-xs sm:text-sm
+              px-4 sm:px-5 py-2
               rounded-full
               border border-[#f1cfd6]
               text-[#6d4b53]
@@ -159,7 +159,6 @@ export default function Account() {
               hover:border-[#FF76B9]
               transition
               disabled:opacity-50
-              cursor-pointer
             "
           >
             {loading ? "Logging out..." : "Logout"}

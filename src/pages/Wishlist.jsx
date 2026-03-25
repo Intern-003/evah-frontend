@@ -23,7 +23,44 @@ export default function Wishlist() {
   }
 
   if (error) {
-    return <div className="text-center py-40 text-red-500">{error}</div>;
+    const isAuthError =
+      typeof error === "string" &&
+      error.toLowerCase().includes("unauthenticated");
+
+    if (isAuthError) {
+      return (
+        <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#FFF1F4] to-white px-6">
+          <div className="bg-white p-10 rounded-[30px] shadow-[0_20px_50px_rgba(255,118,185,0.25)] text-center max-w-md w-full">
+            <h2 className="text-2xl font-semibold text-[#2b1b1f] mb-3">
+              Please Login 💖
+            </h2>
+
+            <p className="text-sm text-[#6d4b53] mb-6">
+              You need to login before accessing your wishlist.
+            </p>
+
+            <button
+              onClick={() => navigate("/login")}
+              className="
+                px-8 py-3 rounded-full
+                bg-gradient-to-r from-[#FF76B9] to-[#FF9FCC]
+                text-white text-sm tracking-wider
+                shadow-[0_10px_30px_rgba(255,118,185,0.35)]
+                hover:scale-105 transition cursor-pointer
+              "
+            >
+              LOGIN NOW
+            </button>
+          </div>
+        </section>
+      );
+    }
+
+    return (
+      <div className="text-center py-40 text-red-500">
+        Something went wrong 😢
+      </div>
+    );
   }
 
   const removeItem = async (id) => {
@@ -127,7 +164,11 @@ export default function Wishlist() {
                   className="cursor-pointer"
                 >
                   <img
-                    src={item.product.image_url}
+                    // src={item.product.image_url}
+                    src={item.product.image_url.replace(
+                      "/evah_backend/storage",
+                      "/evah_backend/public/storage",
+                    )}
                     alt={item.product.name}
                     className="
                       h-[200px]

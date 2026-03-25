@@ -21,7 +21,11 @@ export default function CartDrawer({ open, onClose }) {
       name: item.product.name,
       price: item.product.sale_price ?? item.product.price,
       qty: item.quantity,
-      image: item.product.image_url,
+      // image: item.product.image_url,
+      image: item.product.image_url?.replace(
+        "/evah_backend/storage",
+        "/evah_backend/public/storage",
+      ),
     })) || [];
 
   const [time, setTime] = useState(600);
@@ -264,10 +268,15 @@ export default function CartDrawer({ open, onClose }) {
 
           <button
             onClick={() => {
+              if (cart.length === 0) {
+                toast.error("Your cart is empty 🛒");
+                return;
+              }
+
               onClose();
               setTimeout(() => {
                 navigate("/checkout");
-              }, 350); // drawer animation time
+              }, 350);
             }}
             className="
             group

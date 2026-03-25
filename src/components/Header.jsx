@@ -125,7 +125,7 @@ export default function Header() {
         `}
         >
           {/* MOBILE HEADER */}
-          <div className="flex items-center justify-between md:hidden">
+          <div className="flex items-center justify-between md:hidden mt-6">
             {/* LEFT - MENU */}
             <button onClick={() => setMenuOpen(true)}>☰</button>
 
@@ -135,14 +135,93 @@ export default function Header() {
                 navigate("/");
                 window.location.reload();
               }}
-              className="text-[24px] tracking-[0.3em] font-medium"
+              className="absolute left-1/2 -translate-x-1/2
+              text-[40px]
+              tracking-[0.30em]
+              font-medium
+              select-none
+              cursor-pointer
+              ml-2"
             >
               EVAH
             </h1>
+            <div className="flex items-center gap-4">
+              {/* RIGHT - SEARCH */}
+              <button
+                aria-label="Search"
+                onClick={() => setSearchOpen(true)}
+                className="opacity-90 hover:opacity-100 transition cursor-pointer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </button>
+              {/* CART */}
+              <button
+                onClick={() => {
+                  if (location.pathname !== "/cart") {
+                    setCartOpen(true);
+                  }
+                }}
+                aria-label="Cart"
+                className="flex items-center gap-2 rounded-md relative opacity-90 hover:opacity-100 transition cursor-pointer"
+              >
+                {/* CART ICON */}
 
-            {/* RIGHT - SEARCH */}
-            <button onClick={() => setSearchOpen(true)}>🔍</button>
+                <div className="relative">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M6 6h15l-1.5 9h-13z" />
+                    <circle cx="9" cy="21" r="1" />
+                    <circle cx="18" cy="21" r="1" />
+                  </svg>
+
+                  {/* ITEM COUNT BADGE */}
+
+                  {!cartLoading && cartCount > 0 && (
+                    <span
+                      className="
+                    absolute
+                    -top-2
+                    -right-2
+                    bg-[#FF76B9]
+                    text-white
+                    text-[10px]
+                    w-5
+                    h-5
+                    flex
+                    items-center
+                    justify-center
+                    rounded-full
+                    "
+                    >
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </button>
+            </div>
+            <SearchModal
+              open={searchOpen}
+              onClose={() => setSearchOpen(false)}
+            />
+            <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
           </div>
+
           {/* TOP ROW */}
           {/* <div className="flex items-center justify-between"> */}
           <div className="hidden md:flex items-center justify-between">
@@ -409,28 +488,6 @@ export default function Header() {
         </div>
       </header>
 
-      {menuOpen && (
-        <div className="fixed inset-0 bg-white z-[999] p-6">
-          <div className="flex justify-between mb-6">
-            <h2>Menu</h2>
-            <button onClick={() => setMenuOpen(false)}>✕</button>
-          </div>
-
-          {navItems.map((item) => (
-            <p
-              key={item.label}
-              onClick={() => {
-                navigate(item.path);
-                setMenuOpen(false);
-              }}
-              className="mb-4"
-            >
-              {item.label}
-            </p>
-          ))}
-        </div>
-      )}
-
       {addProductOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[100]"
@@ -555,6 +612,200 @@ export default function Header() {
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {menuOpen && (
+        <div
+          className="
+            fixed inset-0 z-[999]
+            bg-black/60 backdrop-blur-md
+            flex justify-start
+            animate-fadeIn
+          "
+        >
+          {/* SIDE PANEL */}
+          <div
+            className="
+              w-[85%] max-w-[340px]
+              h-full
+              bg-gradient-to-br from-white to-[#fff4f8]
+              shadow-[0_20px_80px_rgba(255,118,185,0.25)]
+              p-6
+              flex flex-col
+              animate-slideIn
+            "
+          >
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-lg font-semibold text-[#2b1b1f] tracking-wide">
+                Menu
+              </h2>
+
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="
+                  w-9 h-9 flex items-center justify-center
+                  rounded-full
+                  bg-[#FFF1F6]
+                  text-[#FF76B9]
+                  hover:bg-[#FF76B9] hover:text-white
+                  transition
+                "
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* NAV ITEMS */}
+            <div className="flex flex-col gap-3">
+              {/* QUICK ACTIONS (PROFILE / WISHLIST / SETTINGS) */}
+              <div className="flex gap-8 mb-6">
+                {/* PROFILE */}
+                <div
+                  onClick={() => {
+                    navigate("/profile");
+                    setMenuOpen(false);
+                  }}
+                  className="flex flex-col items-center gap-1 cursor-pointer"
+                >
+                  <div className="w-12 h-12 rounded-full bg-[#FFF1F6] flex items-center justify-center">
+                    👤
+                  </div>
+                  <span className="text-xs">Profile</span>
+                </div>
+
+                {/* WISHLIST */}
+                <div
+                  onClick={() => {
+                    navigate("/wishlist");
+                    setMenuOpen(false);
+                  }}
+                  className="flex flex-col items-center gap-1 cursor-pointer"
+                >
+                  <div className="w-12 h-12 rounded-full bg-[#FFF1F6] flex items-center justify-center relative">
+                    ❤️
+                    {wishlistCount > 0 && (
+                      <span className="absolute -top-1 -right-1 text-[10px] bg-[#FF76B9] text-white w-4 h-4 flex items-center justify-center rounded-full">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs">Wishlist</span>
+                </div>
+
+                {/* SETTINGS (admin only optional) */}
+                {role === "admin" && (
+                  <div className="flex flex-col items-center gap-2">
+                    {/* DROPDOWN OPTIONS */}
+                    <div className="flex flex-col gap-2 w-full">
+                      <div
+                        onClick={() => {
+                          navigate("/admin/dashboard");
+                          setMenuOpen(false);
+                        }}
+                        className="px-3 py-1 bg-white rounded-lg text-xs border cursor-pointer hover:bg-[#FF76B9] hover:text-white transition"
+                      >
+                        Dashboard
+                      </div>
+
+                      <div
+                        onClick={() => {
+                          setAddProductOpen(true);
+                          setMenuOpen(false);
+                        }}
+                        className="px-3 py-1 bg-white rounded-lg text-xs border cursor-pointer hover:bg-[#FF76B9] hover:text-white transition"
+                      >
+                        Products
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {navItems.map((item, i) => (
+                <div key={item.label}>
+                  {/* NORMAL ITEM */}
+                  {!item.dropdown && (
+                    <div
+                      onClick={() => {
+                        navigate(item.path);
+                        setMenuOpen(false);
+                      }}
+                      className="group flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer bg-white/70 backdrop-blur-md border border-[#f3d2d9] hover:bg-gradient-to-r hover:from-[#FF76B9] hover:to-[#ffa3cf] transition duration-300 shadow-sm hover:shadow-lg"
+                    >
+                      <span className="text-sm font-medium text-[#2b1b1f] group-hover:text-white transition">
+                        {item.label}
+                      </span>
+
+                      <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#FFF1F6] group-hover:bg-white/20 transition">
+                        →
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DROPDOWN ITEM */}
+                  {item.dropdown && (
+                    <div className="mb-2">
+                      {/* TITLE */}
+                      <p className="text-sm font-semibold text-[#2b1b1f] mb-2 px-2">
+                        {item.label}
+                      </p>
+
+                      {/* CHILD ITEMS */}
+                      <div className="flex flex-col gap-2 pl-3">
+                        {item.dropdown.map((sub) => (
+                          <div
+                            key={sub.label}
+                            onClick={() => {
+                              navigate(sub.path);
+                              setMenuOpen(false);
+                            }}
+                            className="px-4 py-2 rounded-lg bg-white/60 border border-[#f3d2d9] cursor-pointer hover:bg-[#FF76B9] hover:text-white transition text-sm"
+                          >
+                            {sub.label}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* EXTRA FOOTER */}
+            <div className="mt-auto pt-6 border-t border-[#f3d2d9]">
+              <p className="text-xs text-[#8b6a72] text-center">
+                Evah Fragrance
+              </p>
+            </div>
+          </div>
+
+          {/* CLICK OUTSIDE CLOSE */}
+          <div className="flex-1" onClick={() => setMenuOpen(false)}></div>
+
+          {/* ANIMATION */}
+          <style>
+            {`
+              .animate-fadeIn {
+                animation: fadeIn 0.25s ease;
+              }
+
+              .animate-slideIn {
+                animation: slideIn 0.3s ease;
+              }
+
+              @keyframes fadeIn {
+                from { opacity: 0 }
+                to { opacity: 1 }
+              }
+
+              @keyframes slideIn {
+                from { transform: translateX(-100%); opacity: 0 }
+                to { transform: translateX(0); opacity: 1 }
+              }
+            `}
+          </style>
         </div>
       )}
     </>

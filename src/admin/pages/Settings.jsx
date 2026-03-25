@@ -82,7 +82,7 @@ export default function Settings() {
 
             <div>
               <label className="text-xs tracking-widest text-[#a07a83]">
-                SUPPORT EMAIL
+                EMAIL
               </label>
 
               <input

@@ -56,8 +56,10 @@ export default function Footer() {
                   <i className="fa-solid fa-location-dot"></i>
                 </span>
                 <span>
-                  1237 E Warner Avenue, <br />
-                  Santa Ana, CA 92705
+                  316 Laxmi Plaza, <br />
+                  Laxmi Industrial Estate, <br />
+                  Andheri West, <br />
+                  Mumbai, Maharashtra - 400053.
                 </span>
               </li>
 
@@ -66,7 +68,7 @@ export default function Footer() {
                 <span className="text-[#FF76B9]">
                   <i className="fa-solid fa-envelope"></i>
                 </span>
-                <span>hello@evahperfume.com</span>
+                <span>Evah.fragrance@gmail.com</span>
               </li>
 
               {/* PHONE */}
@@ -74,7 +76,7 @@ export default function Footer() {
                 <span className="text-[#FF76B9]">
                   <i className="fa-solid fa-phone"></i>
                 </span>
-                <span>+91 98765 43210</span>
+                <span>+91 84500 07614</span>
               </li>
             </ul>
           </div>

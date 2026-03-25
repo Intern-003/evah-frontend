@@ -1,14 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+import aboutoneImg from "../../src/assets/images/aboutone.png";
+import library1Img from "../../src/assets/images/library1.png";
+import library2Img from "../../src/assets/images/library2.png";
+import library3Img from "../../src/assets/images/library3.png";
+
 export default function AboutUs() {
   return (
     <>
       {/* ================= HERO SECTION ================= */}
-      <section className="relative h-[95vh] w-full overflow-hidden">
+      {/* <section className="relative h-[95vh] w-full overflow-hidden"> */}
+      <section className="relative h-[70vh] md:h-[95vh] w-full overflow-hidden">
         {/* Background Image */}
         <img
-          src="src/assets/images/aboutone.png" // apni image yaha daal
+          src={aboutoneImg}
           alt="About Evah Perfume"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -19,11 +25,11 @@ export default function AboutUs() {
 
         <div className="relative z-10 h-full flex items-center justify-center text-center px-6">
           <div className="max-w-[900px] text-white">
-            <h1 className="font-serif text-[38px] md:text-[38px] leading-tight tracking-wide mt-30 mb-6">
+            <h1 className="font-serif text-[24px] md:text-[38px] leading-tight tracking-wide mt-10 md:mt-30 mb-6">
               A Quarter Century of Crafting the Invisible Art
             </h1>
 
-            <p className="text-[16px] md:text-[15px] leading-relaxed text-white/90 max-w-[720px] mx-auto">
+            <p className="text-[13px] md:text-[15px] leading-relaxed text-white/90 max-w-[720px] mx-auto">
               For 25 years, we’ve lived inside the world of scent — researching
               oils, perfecting formulas, and building a California-born
               perfumery rooted in emotion and craftsmanship.
@@ -54,23 +60,24 @@ export default function AboutUs() {
           </p>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center">
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center"> */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 justify-items-center">
             <LibraryCard
-              image="src/assets/images/library1.png"
+              image={library1Img}
               label="NICHE & ARTISANAL"
               title="For the Curious Nose"
               desc="Discover complex, story-driven compositions crafted for perfume lovers who seek depth, texture, and character in every spritz."
             />
 
             <LibraryCard
-              image="src/assets/images/library2.png"
+              image={library2Img}
               label="DISCONTINUED GEMS"
               title="Scents Worth Keeping Alive"
               desc="We preserve the fragrances that shouldn’t have vanished—so you can revisit the scents that defined your favorite chapters."
             />
 
             <LibraryCard
-              image="src/assets/images/library3.png"
+              image={library3Img}
               label="ORIGINALS & SINGLE NOTES"
               title="Crafted in California"
               desc="Explore EVAH Originals and minimalist single-note fragrances designed for layering, mood, and everyday ritual."
@@ -102,7 +109,7 @@ export default function AboutUs() {
           {/* Timeline Wrapper */}
           <div className="relative">
             {/* Center Line */}
-            <div className="absolute left-1/2 top-0 h-full w-[1px] bg-[#e9c4cf] -translate-x-1/2" />
+            <div className="absolute left-4 md:left-1/2 top-0 h-full w-[1px] bg-[#e9c4cf] md:-translate-x-1/2" />
 
             {/* ===== ITEM 1 (LEFT) ===== */}
             <TimelineItem
@@ -245,7 +252,7 @@ function LibraryCard({ image, label, title, desc }) {
   return (
     <div
       className="
-        w-[320px]
+        w-full max-w-[320px]
         bg-[#fff3f6]
         rounded-3xl
         overflow-hidden
@@ -257,7 +264,7 @@ function LibraryCard({ image, label, title, desc }) {
       "
     >
       {/* Image */}
-      <div className="h-[300px] overflow-hidden">
+      <div className="h-[180px] sm:h-[220px] md:h-[300px] overflow-hidden">
         <img
           src={image}
           alt={title}
@@ -283,28 +290,35 @@ function TimelineItem({ side, year, title, children }) {
   const isLeft = side === "left";
 
   return (
-    <div className="relative mb-20 h-[220px]">
-      {/* Dot */}
-      <div className="absolute left-1/2 top-8 -translate-x-1/2 w-4 h-4 rounded-full bg-white border-2 border-[#e4a3b1]" />
+    <div className="relative mb-16">
+      {/* LINE DOT */}
+      <div className="absolute left-0 md:left-1/2 top-3 md:top-6 md:-translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-[#e4a3b1]" />
 
-      {/* Card */}
+      {/* CARD */}
       <div
         className={`
-            absolute top-0
-            w-[420px]
-            bg-white
-            rounded-2xl
-            p-8
-            border border-[#f1cfd6]
-            shadow-[0_12px_30px_rgba(228,163,177,0.2)]
-            ${isLeft ? "right-[53%]" : "left-[53%]"}
+          ml-6 md:ml-0
+          md:w-[48%]
+          w-full
+          bg-white
+          rounded-2xl
+          p-6 md:p-8
+          border border-[#f1cfd6]
+          shadow-[0_12px_30px_rgba(228,163,177,0.2)]
+          ${
+            isLeft
+              ? "md:mr-auto md:pr-10 text-left"
+              : "md:ml-auto md:pl-10 text-left"
+          }
         `}
       >
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#b88994] mb-3">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#b88994] mb-2">
           {year}
         </p>
 
-        <h3 className="font-serif text-[20px] text-[#2b1b1f] mb-4">{title}</h3>
+        <h3 className="font-serif text-[18px] md:text-[22px] text-[#2b1b1f] mb-3">
+          {title}
+        </h3>
 
         <p className="text-sm leading-[1.8] text-[#6d4b53]">{children}</p>
       </div>
@@ -317,7 +331,7 @@ function MoodCard({ label, title, desc, action }) {
   return (
     <div
       className="
-        w-[360px]
+        w-full max-w-[360px]
         bg-[#fff5f7]
         rounded-2xl
         p-8

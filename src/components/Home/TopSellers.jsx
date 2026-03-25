@@ -74,7 +74,11 @@ export default function TopSellers() {
                   description: product.description,
                   actualPrice: product.sale_price,
                   salePrice: product.price,
-                  image: product.image_url,
+                  // image: product.image_url,
+                  image: product.image_url?.replace(
+                    "/evah_backend/storage",
+                    "/evah_backend/public/storage",
+                  ),
                   // category: product.category.name,
                 }}
               />
