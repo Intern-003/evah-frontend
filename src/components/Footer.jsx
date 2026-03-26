@@ -68,7 +68,7 @@ export default function Footer() {
                 <span className="text-[#FF76B9]">
                   <i className="fa-solid fa-envelope"></i>
                 </span>
-                <span>Evah.fragrance@gmail.com</span>
+                <span>evah.fragrance@gmail.com</span>
               </li>
 
               {/* PHONE */}

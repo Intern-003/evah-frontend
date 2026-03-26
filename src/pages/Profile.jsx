@@ -49,14 +49,32 @@ export default function Account() {
   const [openEdit, setOpenEdit] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
 
+  const token = localStorage.getItem("token");
+
+  // const handleLogout = async () => {
+  //   await logoutUser();
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("role");
+
+  //   // localStorage.removeItem("role");
+
+  //   navigate("/login");
+  // };
   const handleLogout = async () => {
-    await logoutUser();
+    try {
+      await logoutUser(); // optional
+    } catch (e) {
+      console.log("Logout API failed");
+    }
+
     localStorage.removeItem("token");
     localStorage.removeItem("role");
 
-    // localStorage.removeItem("role");
+    toast.success("Logged out");
 
     navigate("/login");
+
+    window.location.reload(); // 🔥 important
   };
 
   const handleDeleteAddress = async (id) => {
@@ -159,6 +177,7 @@ export default function Account() {
               hover:border-[#FF76B9]
               transition
               disabled:opacity-50
+              cursor-pointer
             "
           >
             {loading ? "Logging out..." : "Logout"}
@@ -292,7 +311,8 @@ export default function Account() {
                   <p className="text-sm text-[#8b6a72]">Name</p>
                   <p className="text-lg font-medium text-[#2b1b1f]">
                     {user?.name}
-                    {user?.role === "admin" && (
+                    {/* {user?.role === "admin" && ( */}
+                    {token && user?.role === "admin" && (
                       <span
                         className="
                           text-[11px]

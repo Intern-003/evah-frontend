@@ -90,7 +90,7 @@ export default function PrivacyPolicy() {
             <p>
               You may request access, correction, or deletion of your personal
               data at any time. To exercise your rights, please contact us at
-              Evah.fragrance@gmail.com.
+              evah.fragrance@gmail.com.
             </p>
           </div>
 

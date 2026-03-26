@@ -6,7 +6,6 @@ const categories = [
   { label: "All Attars", slug: "all" },
   { label: "Oud", slug: "oud" },
   { label: "Rose", slug: "rose" },
-  { label: "Musk", slug: "musk" },
   { label: "Amber", slug: "amber" },
 ];
 
