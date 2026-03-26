@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useGet } from "../hooks/useGet";
 import { usePut } from "../hooks/usePut";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 export default function OrderDetails() {
   const { id } = useParams();
@@ -23,6 +24,8 @@ export default function OrderDetails() {
   }
 
   const BASE_URL = import.meta.env.VITE_API_URL;
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
 
   const downloadInvoice = async () => {
     try {
@@ -72,7 +75,7 @@ export default function OrderDetails() {
         {/* BACK */}
         <button
           onClick={() => navigate(-1)}
-          className="text-sm text-[#6d4b53] hover:text-[#FF76B9] transition"
+          className="text-sm text-[#6d4b53] hover:text-[#FF76B9] transition cursor-pointer"
         >
           ← Back
         </button>
@@ -129,19 +132,9 @@ export default function OrderDetails() {
               </button>
             </div>
 
-            {/* {order.status === "confirmed" && ( */}
             {["pending", "confirmed"].includes(order.status) && (
               <button
-                // onClick={handleCancel}
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      "Are you sure you want to cancel this order?",
-                    )
-                  ) {
-                    handleCancel();
-                  }
-                }}
+                onClick={() => setShowCancelModal(true)}
                 className="px-3 py-2 text-sm rounded-lg bg-red-500 text-white hover:bg-red-600 transition cursor-pointer"
               >
                 Cancel Order
@@ -151,7 +144,6 @@ export default function OrderDetails() {
         </div>
 
         {/* STATUS TIMELINE */}
-
         <div className="bg-white border border-[#f3d2d9] rounded-2xl p-8 shadow-sm">
           <div className="flex justify-between items-center">
             {steps.map((step, i) => {
@@ -194,10 +186,8 @@ export default function OrderDetails() {
         </div>
 
         {/* ORDER DETAILS */}
-
         <div className="grid md:grid-cols-2 gap-8">
           {/* PRODUCTS */}
-
           <div className="bg-white border border-[#f3d2d9] rounded-2xl p-6 shadow-sm flex flex-col h-[470px]">
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-medium mb-4 text-[#2b1b1f]">Order Items</h2>
@@ -241,10 +231,8 @@ export default function OrderDetails() {
           </div>
 
           {/* ORDER INFO */}
-
           <div className="space-y-6">
             {/* ADDRESS */}
-
             <div className="bg-white border border-[#f3d2d9] rounded-2xl p-6 shadow-sm">
               <h2 className="font-medium mb-2 text-[#2b1b1f]">
                 Delivery Details
@@ -273,7 +261,6 @@ export default function OrderDetails() {
             </div>
 
             {/* PAYMENT */}
-
             <div className="bg-white border border-[#f3d2d9] rounded-2xl p-6 shadow-sm">
               <h2 className="text-lg font-medium mb-3 text-[#2b1b1f]">
                 Payment
@@ -302,13 +289,141 @@ export default function OrderDetails() {
           <p className="text-sm">Need help with your order?</p>
 
           <button
-            onClick={() => navigate(`/contact-us`)}
+            // onClick={() => navigate(`/contact-us`)}
+            onClick={() => setShowSupportModal(true)}
             className="mt-3 px-4 py-2 bg-white text-[#FF76B9] rounded-lg text-sm cursor-pointer"
           >
             Contact Support
           </button>
         </div>
       </div>
+      {showCancelModal && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-md border border-[#f3d2d9] shadow-[0_20px_50px_rgba(255,118,185,0.2)]">
+            {/* TITLE */}
+            <h2 className="text-lg font-serif text-[#2b1b1f]">Cancel Order?</h2>
+
+            {/* DESC */}
+            <p className="text-sm text-[#8b6a72] mt-2">
+              Are you sure you want to cancel this order? This action cannot be
+              undone.
+            </p>
+
+            {/* ACTIONS */}
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowCancelModal(false)}
+                className="px-4 py-2 text-sm rounded-lg border border-[#f3d2d9] hover:bg-[#FFF1F6] cursor-pointer"
+              >
+                No, Keep
+              </button>
+
+              <button
+                onClick={async () => {
+                  await handleCancel();
+                  setShowCancelModal(false);
+                }}
+                className="px-4 py-2 text-sm rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer"
+              >
+                Yes, Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showSupportModal && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-lg border border-[#f3d2d9] shadow-[0_20px_50px_rgba(255,118,185,0.2)]">
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-[#2b1b1f]">
+                Contact Support 💖
+              </h2>
+
+              <button
+                onClick={() => setShowSupportModal(false)}
+                className="text-gray-400 hover:text-[#FF76B9]"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* FORM */}
+            <div className="space-y-4">
+              {/* ORDER ID AUTO */}
+              <input
+                type="text"
+                value={order?.order_number}
+                disabled
+                className="w-full px-4 py-3 rounded-lg border bg-gray-50 text-sm"
+              />
+
+              {/* SUBJECT */}
+              <input
+                type="text"
+                placeholder="Subject (e.g. Payment issue)"
+                className="w-full px-4 py-3 rounded-lg border border-[#f3d2d9] focus:border-[#FF76B9] outline-none text-sm"
+              />
+
+              {/* MESSAGE */}
+              <textarea
+                rows="4"
+                placeholder="Describe your issue..."
+                className="w-full px-4 py-3 rounded-lg border border-[#f3d2d9] focus:border-[#FF76B9] outline-none text-sm resize-none"
+              />
+
+              {/* FILE UPLOAD */}
+              <div className="relative">
+                <label
+                  className="
+                    flex items-center justify-between
+                    px-4 py-3
+                    border border-dashed border-[#f3d2d9]
+                    rounded-lg
+                    cursor-pointer
+                    bg-[#FFF7FA]
+                    hover:border-[#FF76B9]
+                    transition
+                  "
+                >
+                  <span className="text-sm text-[#6d4b53]">
+                    📎 Upload screenshot / file
+                  </span>
+
+                  <span className="text-xs text-[#FF76B9] font-medium">
+                    Choose File
+                  </span>
+
+                  <input
+                    type="file"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* ACTIONS */}
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowSupportModal(false)}
+                className="px-4 py-2 text-sm rounded-lg border border-[#f3d2d9] hover:bg-[#FFF1F6]"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => {
+                  toast.success("Support request sent 💌");
+                  setShowSupportModal(false);
+                }}
+                className="px-5 py-2 text-sm rounded-lg bg-gradient-to-r from-[#FF76B9] to-[#FF9FCC] text-white shadow cursor-pointer"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

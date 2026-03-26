@@ -239,7 +239,11 @@ export default function Orders() {
                   >
                     {/* IMAGE */}
                     <img
-                      src={item.product.image_url}
+                      // src={item.product.image_url}
+                      src={item.product.image_url.replace(
+                        "/evah_backend/storage",
+                        "/evah_backend/public/storage",
+                      )}
                       className="w-14 h-14 object-contain bg-white border rounded-lg p-1"
                     />
 

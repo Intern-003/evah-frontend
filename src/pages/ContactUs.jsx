@@ -19,7 +19,7 @@ export default function ContactUs() {
           bottom-left corner of your screen — our team responds promptly and
           personally. You may also email us at{" "}
           <span className="font-medium text-[#2b1b1f]">
-            Evah.fragrance@gmail.com
+            evah.fragrance@gmail.com
           </span>
           , and we’ll be happy to assist you.
         </p>
@@ -81,7 +81,7 @@ export default function ContactUs() {
               <li className="flex items-start gap-3">
                 <MailIcon />
                 <span className="font-medium text-[#2b1b1f]">
-                  Evah.fragrance@gmail.com
+                  evah.fragrance@gmail.com
                 </span>
               </li>
             </ul>

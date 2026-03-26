@@ -186,7 +186,11 @@ export default function SearchModal({ open, onClose }) {
                         >
                           <div className="h-[100px] md:h-[140px] flex items-center justify-center">
                             <img
-                              src={item.image_url}
+                              // src={item.image_url}
+                              src={item.image_url.replace(
+                                "/evah_backend/storage",
+                                "/evah_backend/public/storage",
+                              )}
                               className="h-full object-contain"
                             />
                           </div>
