@@ -1,5 +1,7 @@
-import Header from "../components/Header";
+import { useState } from "react";
 import Hero from "../components/Home/Hero";
+import PageSkeleton from "../components/PageSkeleton";
+
 import MarqueeBar from "../components/Home/MarqueeBar";
 import FeaturedSection from "../components/Home/FeaturedSection";
 import WhyChooseUs from "../components/Home/WhyChooseUs";
@@ -9,17 +11,24 @@ import GiftableByDesign from "../components/Home/GiftableByDesign";
 import ExploreByFragranceFamily from "../components/Home/ExploreByFragranceFamily";
 
 export default function Home() {
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   return (
     <>
-      <Header />
-      <Hero />
-      <MarqueeBar />
-      <FeaturedSection />
-      <WhyChooseUs />
-      <TopSellers />
-      <ShopByGender />
-      <GiftableByDesign />
-      <ExploreByFragranceFamily />
+      {/* 🔥 Skeleton overlay */}
+      {!videoLoaded && <PageSkeleton />}
+
+      {/* 🔥 Actual content */}
+      <div className={`${!videoLoaded ? "hidden" : "block"}`}>
+        <Hero onVideoLoaded={() => setVideoLoaded(true)} />
+        <MarqueeBar />
+        <FeaturedSection />
+        <WhyChooseUs />
+        <TopSellers />
+        <ShopByGender />
+        <GiftableByDesign />
+        <ExploreByFragranceFamily />
+      </div>
     </>
   );
 }

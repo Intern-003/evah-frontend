@@ -1,13 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { useGet } from "../hooks/useGet";
+import { usePost } from "../hooks/usePost";
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [userMessage, setUserMessage] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
+  const [chatMode, setChatMode] = useState(false);
 
   const chatbotRef = useRef(null);
 
   const { data } = useGet("chat/questions");
+  const { execute } = usePost("chat/send");
+  const { data: chatData } = useGet("chat/messages");
 
   const questions = data?.questions || [];
 
@@ -16,6 +22,48 @@ export default function Chatbot() {
   );
 
   const answer = answerData?.answer;
+
+  const handleSend = async () => {
+    if (!userMessage.trim()) return;
+
+    const message = userMessage;
+
+    setChatHistory((prev) => [
+      ...prev,
+      { type: "user", text: message },
+      {
+        type: "bot",
+        text: "Thanks for contacting us! Our support team will reach out to you as soon as possible.",
+      },
+    ]);
+
+    setUserMessage("");
+    setChatMode(true);
+    setSelectedQuestion(null);
+
+    try {
+      await execute({ message });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (!chatData?.messages) return;
+
+    const formatted = [];
+
+    chatData.messages.forEach((msg) => {
+      formatted.push({ type: "user", text: msg.message });
+
+      if (msg.reply) {
+        formatted.push({ type: "bot", text: msg.reply });
+      }
+    });
+
+    setChatHistory(formatted);
+    setChatMode(true);
+  }, [chatData]);
 
   /* ================= CLOSE ON OUTSIDE CLICK ================= */
 
@@ -124,7 +172,7 @@ export default function Chatbot() {
 
         {/* BODY */}
 
-        <div className="p-4 max-h-[420px] overflow-y-auto space-y-3">
+        {/* <div className="p-4 max-h-[420px] overflow-y-auto space-y-3">
           {!selectedQuestion && (
             <>
               <p className="text-xs text-[#6d4b53] mb-3">Popular questions</p>
@@ -149,8 +197,6 @@ export default function Chatbot() {
               ))}
             </>
           )}
-
-          {/* ANSWER */}
 
           {selectedQuestion && (
             <div className="space-y-3">
@@ -178,6 +224,116 @@ export default function Chatbot() {
               </button>
             </div>
           )}
+        </div> */}
+        <div className="p-4 max-h-[420px] overflow-y-auto space-y-3">
+          {/* 🔥 CHAT MODE */}
+          {chatMode && (
+            <>
+              {chatHistory.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`
+              px-4 py-2 rounded-xl text-sm max-w-[75%]
+              ${
+                msg.type === "user"
+                  ? "bg-[#FF76B9] text-white"
+                  : "bg-[#fff1f4] text-[#2b1b1f]"
+              }
+            `}
+                  >
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* 🔥 QUESTIONS MODE */}
+          {!chatMode && !selectedQuestion && (
+            <>
+              <p className="text-xs text-[#6d4b53] mb-3">Popular questions</p>
+
+              {questions.map((q) => (
+                <button
+                  key={q.id}
+                  onClick={() => setSelectedQuestion(q.id)}
+                  className="w-full text-left bg-[#fff1f4] hover:bg-[#ffe3ea] text-sm px-4 py-3 rounded-xl"
+                >
+                  {q.question}
+                </button>
+              ))}
+            </>
+          )}
+
+          {/* 🔥 ANSWER */}
+          {!chatMode && selectedQuestion && (
+            <div className="space-y-3">
+              <div className="bg-[#fff1f4] text-sm p-4 rounded-xl">
+                {answerLoading ? <TypingDots /> : answer}
+              </div>
+
+              <button
+                onClick={() => setSelectedQuestion(null)}
+                className="text-xs text-[#FF76B9] hover:underline"
+              >
+                ← Back
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="border-t bg-white px-4 py-3">
+          <div className="flex items-center gap-2 bg-[#FFF1F4] border border-[#ffd6e0] rounded-full px-3 py-2 shadow-sm">
+            {/* INPUT */}
+            <input
+              type="text"
+              value={userMessage}
+              onChange={(e) => setUserMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="
+        flex-1
+        bg-transparent
+        text-sm
+        px-2
+        outline-none
+        placeholder:text-[#b88a95]
+      "
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSend();
+              }}
+            />
+
+            {/* SEND BUTTON */}
+            <button
+              onClick={handleSend}
+              className="
+                w-9 h-9
+                flex items-center justify-center
+                rounded-full
+                bg-gradient-to-br from-[#FF76B9] to-[#FF9FCC]
+                text-white
+                shadow-md
+                hover:scale-105 active:scale-95
+                transition-all duration-200
+              "
+            >
+              {/* ICON */}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M22 2L11 13" />
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </>

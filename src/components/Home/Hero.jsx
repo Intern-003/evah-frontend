@@ -1,19 +1,28 @@
 import heroVideo from "../../assets/videos/hero.mp4";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export default function Hero() {
+export default function Hero({ onVideoLoaded }) {
   const navigate = useNavigate();
+
+  const [isLoaded, setIsLoaded] = useState(false);
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Video */}
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
         src={heroVideo}
         autoPlay
         loop
         muted
         playsInline
+        onLoadedData={() => {
+          setIsLoaded(true); // 🔥 yahi error de raha tha
+          onVideoLoaded && onVideoLoaded();
+        }}
       />
 
       {/* Overlay */}
