@@ -7,6 +7,7 @@ const menu = [
   { name: "Customers", path: "/admin/customers" },
   { name: "Reviews", path: "/admin/reviews" },
   { name: "Chatbot", path: "/admin/chatbot" },
+  { name: "Quries", path: "/admin/Quries" },
   { name: "Coupons", path: "/admin/coupons" },
   { name: "Settings", path: "/admin/settings" },
 ];
